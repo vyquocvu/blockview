@@ -59,7 +59,7 @@ export function TransactionLogs({ receipt, decodedLogs, onDecodedLogs }: Transac
         </div>
       </div>
       <div className="space-y-3 mt-1">
-        {(decodedLogs.length ? decodedLogs : receipt.logs).map((log, index) => {
+        {(decodedLogs.length ? decodedLogs : receipt.logs).map((_, index) => {
           const decodedLog = decodedLogs[index];
           const rawLog = receipt.logs[index];
           return (

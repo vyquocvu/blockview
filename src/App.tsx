@@ -69,8 +69,10 @@ function App() {
         return (
           <>
             <SearchBar />
-            <NetworkInfo />
-            <BlockCounter />
+            <div className="grid grid-cols-2 gap-4">
+              <NetworkInfo />
+              <BlockCounter />
+            </div>
             <BlockList />
           </>
         )
@@ -84,8 +86,10 @@ function App() {
         return (
           <>
             <SearchBar />
-            <NetworkInfo />
-            <BlockCounter />
+            <div className="grid grid-cols-2 gap-4">
+              <NetworkInfo />
+              <BlockCounter />
+            </div>
             <BlockList />
           </>
         )

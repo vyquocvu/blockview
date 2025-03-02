@@ -2,6 +2,13 @@ import { useEffect, useState } from "react";
 import { getBlock, getTransaction, formatTimestamp, formatAddress } from "../lib/blockchain";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { Button } from "./ui/button";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "./ui/select"
 import { Block, TransactionResponse } from "ethers";
 
 interface BlockDetailsProps {
@@ -15,6 +22,8 @@ export function BlockDetails({ blockNumber, onBack }: BlockDetailsProps) {
   const [error, setError] = useState<string | null>(null);
 
   const [transactions, setTransactions] = useState<TransactionResponse[]>([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [txsPerPage, setTxsPerPage] = useState(25);
 
   useEffect(() => {
     const fetchBlockData = async () => {
@@ -24,14 +33,8 @@ export function BlockDetails({ blockNumber, onBack }: BlockDetailsProps) {
         const blockData = await getBlock(parseInt(blockNumber));
         setBlock(blockData);
 
-        // Fetch transaction details for the first 25 transactions
-        if (blockData && blockData.transactions.length > 0) {
-          const txPromises = blockData.transactions.slice(0, 25).map((txHash: string) => {
-            return getTransaction(txHash);
-          });
-          const txDetails = await Promise.all(txPromises);
-          setTransactions(txDetails.filter(tx => tx !== null));
-        }
+        // Reset to first page when loading a new block
+        setCurrentPage(1);
       } catch (err) {
         console.error("Error fetching block data:", err);
         setError("Failed to fetch block data. Please try again later.");
@@ -44,6 +47,33 @@ export function BlockDetails({ blockNumber, onBack }: BlockDetailsProps) {
       fetchBlockData();
     }
   }, [blockNumber]);
+
+  useEffect(() => {
+    if (block) {
+      fetchTransactionsForPage(block, currentPage);
+    }
+  }, [block, currentPage, txsPerPage]);
+
+  const fetchTransactionsForPage = async (blockData: Block, page: number) => {
+    const startIndex = (page - 1) * txsPerPage;
+    const endIndex = Math.min(startIndex + txsPerPage, blockData.transactions.length);
+    
+    const txPromises = blockData.transactions.slice(startIndex, endIndex).map((txHash: string) => {
+      return getTransaction(txHash);
+    });
+    
+    const txDetails = await Promise.all(txPromises);
+    setTransactions(txDetails.filter(tx => tx !== null));
+  };
+
+  const handlePageChange = async (newPage: number) => {
+    if (block) {
+      setLoading(true);
+      await fetchTransactionsForPage(block, newPage);
+      setCurrentPage(newPage);
+      setLoading(false);
+    }
+  };
 
   if (loading) {
     return (
@@ -189,15 +219,45 @@ export function BlockDetails({ blockNumber, onBack }: BlockDetailsProps) {
                         )}
                       </td>
                       <td className="px-4 py-3">
-                        {tx.value ? Number(tx.value) / 1e18 : 0} ETH
+                        {tx.value ? Number(tx.value) / 1e18 : 0} VIC
                       </td>
                     </tr>
                   ))}
                 </tbody>
               </table>
-              {block.transactions.length > 25 && (
-                <div className="p-4 text-center text-sm text-muted-foreground">
-                  Showing {transactions.length} of {block.transactions.length} transactions
+              {block.transactions.length > txsPerPage && (
+                <div className="p-4 flex justify-between items-center border-t">
+                  <div className="text-sm text-muted-foreground flex">
+                    Showing {(currentPage - 1) * txsPerPage + 1} to {Math.min(currentPage * txsPerPage, block.transactions.length)} of {block.transactions.length} transactions
+                  </div>
+                  <div className="flex space-x-2">
+                    <Select onValueChange={(value) => setTxsPerPage(+value)}>
+                      <SelectTrigger className="w-16">
+                        <SelectValue placeholder={txsPerPage} />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="25">25</SelectItem>
+                        <SelectItem value="50">50</SelectItem>
+                        <SelectItem value="100">100</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <Button 
+                      variant="outline" 
+                      size="sm" 
+                      onClick={() => handlePageChange(currentPage - 1)}
+                      disabled={currentPage === 1 || loading}
+                    >
+                      Previous
+                    </Button>
+                    <Button 
+                      variant="outline" 
+                      size="sm" 
+                      onClick={() => handlePageChange(currentPage + 1)}
+                      disabled={currentPage * txsPerPage >= block.transactions.length || loading}
+                    >
+                      Next
+                    </Button>
+                  </div>
                 </div>
               )}
             </div>

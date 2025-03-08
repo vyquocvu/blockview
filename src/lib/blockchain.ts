@@ -1,7 +1,18 @@
 import { ethers } from "ethers";
 
+// Default RPC URL
+let rpcUrl = localStorage.getItem("custom_rpc_url") || "https://rpc.viction.xyz";
+
 // Initialize provider with the RPC URL
-const provider = new ethers.JsonRpcProvider("https://rpc.viction.xyz");
+let provider = new ethers.JsonRpcProvider(rpcUrl);
+
+// Function to update the RPC URL and reinitialize the provider
+export function updateRpcUrl(newRpcUrl: string) {
+  rpcUrl = newRpcUrl;
+  provider = new ethers.JsonRpcProvider(rpcUrl);
+  localStorage.setItem("custom_rpc_url", rpcUrl);
+  return provider;
+}
 
 // Function to get the latest block number
 export async function getLatestBlockNumber() {

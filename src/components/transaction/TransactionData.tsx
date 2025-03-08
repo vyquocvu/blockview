@@ -52,8 +52,8 @@ export function TransactionData({
         <div className="flex items-center space-x-2">
           <Tabs defaultValue="hex" value={dataFormat} onValueChange={(value) => setDataFormat(value as "hex" | "dec")}>
             <TabsList className="h-9">
-              <TabsTrigger value="hex" className="text-xs px-2 py-0.5">Hex</TabsTrigger>
-              <TabsTrigger value="dec" className="text-xs px-2 py-0.5">Decimal</TabsTrigger>
+              <TabsTrigger value="hex" className="text-xs">Hex</TabsTrigger>
+              <TabsTrigger value="dec" className="text-xs">Dec</TabsTrigger>
             </TabsList>
           </Tabs>
           <TransactionDecoder

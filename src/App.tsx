@@ -8,6 +8,8 @@ import { AddressDetails } from './components/AddressDetails'
 import { BlockCounter } from './components/BlockCounter'
 import { SearchBar } from './components/SearchBar'
 import { NetworkInfo } from './components/NetworkInfo'
+import { NetworkProvider } from './context/NetworkContext'
+import { KeccakTable } from './components/KeccakTable'
 
 function App() {
   const [route, setRoute] = useState<string>('blocks')
@@ -82,6 +84,8 @@ function App() {
         return <TransactionDetails txHash={params.txHash} onBack={navigateToBlocks} />
       case 'address':
         return <AddressDetails address={params.address} onBack={navigateToBlocks} />
+      case 'keccak':
+        return <KeccakTable />
       default:
         return (
           <>
@@ -97,9 +101,11 @@ function App() {
   }
 
   return (
-    <Layout>
-      {renderContent()}
-    </Layout>
+    <NetworkProvider>
+      <Layout>
+        {renderContent()}
+      </Layout>
+    </NetworkProvider>
   )
 }
 

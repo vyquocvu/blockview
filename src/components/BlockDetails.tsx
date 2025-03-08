@@ -120,51 +120,43 @@ export function BlockDetails({ blockNumber, onBack }: BlockDetailsProps) {
           <CardTitle className="text-xl">Block Information</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="grid gap-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <h3 className="text-sm font-medium text-muted-foreground">Block Height</h3>
-                <p className="text-sm">{block.number}</p>
+          <div className="grid gap-1 text-left">
+              <div className="flex">
+                <h3 className="text-sm w-32 font-medium text-muted-foreground">Block Height</h3>
+                <p className="text-sm text-left">{block.number}</p>
               </div>
-              <div>
-                <h3 className="text-sm font-medium text-muted-foreground">Timestamp</h3>
-                <p className="text-sm">{formatTimestamp(block.timestamp)}</p>
+              <div className="flex">
+                <h3 className="text-sm w-32 font-medium text-muted-foreground">Timestamp</h3>
+                <p className="text-sm text-left">{formatTimestamp(block.timestamp)}</p>
               </div>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <h3 className="text-sm font-medium text-muted-foreground">Transactions</h3>
-                <p className="text-sm">{block.transactions.length}</p>
+              <div className="flex">
+                <h3 className="text-sm w-32 font-medium text-muted-foreground">Transactions</h3>
+                <p className="text-sm text-left">{block.transactions.length}</p>
               </div>
-              <div>
-                <h3 className="text-sm font-medium text-muted-foreground">Gas Used</h3>
-                <p className="text-sm">{block.gasUsed ? block.gasUsed.toString() : 'N/A'}</p>
+              <div className="flex">
+                <h3 className="text-sm w-32 font-medium text-muted-foreground">Gas Used</h3>
+                <p className="text-sm text-left">{block.gasUsed ? block.gasUsed.toString() : '0'}</p>
               </div>
-            </div>
-
-            <div>
-              <h3 className="text-sm font-medium text-muted-foreground">Miner</h3>
-              <p className="text-sm font-mono break-all">
-                <a href={`#/address/${block.miner}`} className="text-primary hover:underline">
-                  {block.miner}
-                </a>
-              </p>
-            </div>
-
-            <div>
-              <h3 className="text-sm font-medium text-muted-foreground">Hash</h3>
-              <p className="text-sm font-mono break-all">{block.hash}</p>
-            </div>
-
-            <div>
-              <h3 className="text-sm font-medium text-muted-foreground">Parent Hash</h3>
-              <p className="text-sm font-mono break-all">
-                <a href={`#/block/${block.number - 1}`} className="text-primary hover:underline">
-                  {block.parentHash}
-                </a>
-              </p>
-            </div>
+              <div className="flex">
+                <h3 className="text-sm w-32 font-medium text-muted-foreground">Miner</h3>
+                <p className="text-sm font-mono break-all text-left">
+                  <a href={`#/address/${block.miner}`} className="text-primary hover:underline">
+                    {block.miner}
+                  </a>
+                </p>
+              </div>
+              <div className="flex">
+                <h3 className="text-sm w-32 font-medium text-muted-foreground">Hash</h3>
+                <p className="text-sm font-mono break-all text-left">{block.hash}</p>
+              </div>
+              <div className="flex">
+                <h3 className="text-sm w-32 font-medium text-muted-foreground">Parent Hash</h3>
+                <p className="text-sm font-mono break-all text-left">
+                  <a href={`#/block/${block.number - 1}`} className="text-primary hover:underline">
+                    {block.parentHash}
+                  </a>
+                </p>
+              </div>
           </div>
         </CardContent>
       </Card>

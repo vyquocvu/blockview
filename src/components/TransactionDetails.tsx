@@ -109,21 +109,18 @@ export function TransactionDetails({ txHash, onBack }: TransactionDetailsProps) 
           <CardTitle className="text-xl text-left">Transaction {formatAddress(txHash)}</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="text-left">
-            <div className="">
+          <div className="text-left grid gap-1">
+            <div className="grid gap-1">
               <div className="flex">
-                <h3 className="text-sm w-28 font-medium text-muted-foreground">Transaction Hash</h3>
+                <h3 className="text-sm w-32 font-medium text-muted-foreground">Transaction Hash</h3>
                 <p className="text-sm font-mono break-all">{txHash}</p>
               </div>
               <div className="flex">
-                <h3 className="text-sm w-28 font-medium text-muted-foreground">Status</h3>
+                <h3 className="text-sm w-32 font-medium text-muted-foreground">Status</h3>
                 <p className={`text-sm font-medium ${statusColor}`}>{status}</p>
               </div>
-            </div>
-
-            <div className="">
               <div className="flex">
-                <h3 className="text-sm w-28 font-medium text-muted-foreground">Block</h3>
+                <h3 className="text-sm w-32 font-medium text-muted-foreground">Block</h3>
                 <p className="text-sm">
                   <a href={`#/block/${transaction.blockNumber}`} className="text-primary hover:underline">
                     {transaction.blockNumber}
@@ -131,14 +128,11 @@ export function TransactionDetails({ txHash, onBack }: TransactionDetailsProps) 
                 </p>
               </div>
               <div className="flex">
-                <h3 className="text-sm w-28 font-medium text-muted-foreground">Timestamp</h3>
+                <h3 className="text-sm w-32 font-medium text-muted-foreground">Timestamp</h3>
                 <p className="text-sm">{transaction.blockNumber ? formatTimestamp(transaction.timestamp || 0) : 'Pending'}</p>
               </div>
-            </div>
-
-            <div className="">
               <div className="flex">
-                <h3 className="text-sm w-28 font-medium text-muted-foreground">From</h3>
+                <h3 className="text-sm w-32 font-medium text-muted-foreground">From</h3>
                 <p className="text-sm font-mono break-all">
                   <a href={`#/address/${transaction.from}`} className="text-primary hover:underline">
                     {transaction.from}
@@ -146,7 +140,7 @@ export function TransactionDetails({ txHash, onBack }: TransactionDetailsProps) 
                 </p>
               </div>
               <div className="flex">
-                <h3 className="text-sm w-28 font-medium text-muted-foreground">To</h3>
+                <h3 className="text-sm w-32 font-medium text-muted-foreground">To</h3>
                 <p className="text-sm font-mono break-all">
                   {transaction.to ? (
                     <a href={`#/address/${transaction.to}`} className="text-primary hover:underline">
@@ -157,25 +151,20 @@ export function TransactionDetails({ txHash, onBack }: TransactionDetailsProps) 
                   )}
                 </p>
               </div>
-            </div>
-
-            <div className="">
               <div className="flex">
-                <h3 className="text-sm w-28 font-medium text-muted-foreground">Value</h3>
+                <h3 className="text-sm w-32 font-medium text-muted-foreground">Value</h3>
                 <p className="text-sm">{transaction.value ? Number(transaction.value) / 1e18 : 0} ETH</p>
               </div>
               <div className="flex">
-                <h3 className="text-sm w-28 font-medium text-muted-foreground">Gas Price</h3>
+                <h3 className="text-sm w-32 font-medium text-muted-foreground">Gas Price</h3>
                 <p className="text-sm">{transaction.gasPrice ? Number(transaction.gasPrice) / 1e9 : 0} Gwei</p>
               </div>
-            </div>
-            <div className="">
               <div className="flex">
-                <h3 className="text-sm w-28 font-medium text-muted-foreground">Gas Used</h3>
+                <h3 className="text-sm w-32 font-medium text-muted-foreground">Gas Used</h3>
                 <p className="text-sm">{receipt ? receipt.gasUsed.toString() : 'Pending'}</p>
               </div>
               <div className="flex">
-                <h3 className="text-sm w-28 font-medium text-muted-foreground">Nonce</h3>
+                <h3 className="text-sm w-32 font-medium text-muted-foreground">Nonce</h3>
                 <p className="text-sm">{transaction.nonce}</p>
               </div>
             </div>
@@ -188,7 +177,7 @@ export function TransactionDetails({ txHash, onBack }: TransactionDetailsProps) 
                 onDecodedFunction={setDecodedFunction}
               />
             )}
-
+            <div className="h-3" />
             {receipt && receipt.logs && receipt.logs.length > 0 && (
               <TransactionLogs
                 receipt={receipt}

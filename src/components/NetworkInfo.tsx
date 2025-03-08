@@ -3,29 +3,31 @@ import { provider } from "../lib/blockchain";
 import { Card, CardContent } from "./ui/card";
 
 export function NetworkInfo() {
-  const [chainId, setChainId] = useState<number | null>(null);
   const [loading, setLoading] = useState(true);
+  const [network, setNetwork] = useState<any | null>(null);
   const [error, setError] = useState<string | null>(null);
 
-  const fetchNetworkInfo = async () => {
-    try {
-      setError(null);
-      const network = await provider.getNetwork();
-      setChainId(Number(network.chainId));
-    } catch (err) {
-      console.error("Error fetching network info:", err);
-      setError("Failed to fetch network information");
-    } finally {
-      setLoading(false);
-    }
-  };
-
   useEffect(() => {
+    const fetchNetworkInfo = async () => {
+      try {
+        setError(null);
+        const network = await provider.getNetwork();
+        const chainList = await fetch('https://chainid.network/chains_mini.json');
+        const chainListData = await chainList.json();
+        const chain = chainListData.find((chain: any) => chain.chainId === Number(network.chainId));
+        setNetwork(chain);
+        setLoading(false);
+      } catch (err) {
+        console.error("Error fetching network info:", err);
+        setError("Failed to fetch network information");
+        setLoading(false);
+      }
+    };
     fetchNetworkInfo();
   }, []);
 
   // Viction's native token is VIC
-  const nativeToken = "VIC";
+  const nativeToken = network?.nativeCurrency?.symbol;
 
   return (
     <Card className="mb-6">
@@ -33,7 +35,7 @@ export function NetworkInfo() {
         <div className="flex justify-between items-center">
           <div>
             <h2 className="text-2xl font-bold">Network Information</h2>
-            <p className="text-muted-foreground">Viction Blockchain</p>
+            <p className="text-muted-foreground">{network?.name}</p>
           </div>
           <div className="text-right">
             {error ? (
@@ -43,7 +45,7 @@ export function NetworkInfo() {
             ) : (
               <div className="space-y-1">
                 <div className="text-lg">
-                  <span className="font-semibold">Chain ID:</span> {chainId}
+                  <span className="font-semibold">Chain ID:</span> {network?.chainId}
                 </div>
                 <div className="text-lg">
                   <span className="font-semibold">Native Token:</span> {nativeToken}

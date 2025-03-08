@@ -49,8 +49,8 @@ export function TransactionLogs({ receipt, decodedLogs, onDecodedLogs }: Transac
         <div className="flex items-center space-x-2">
           <Tabs defaultValue="hex" value={dataFormat} onValueChange={(value) => setDataFormat(value as "hex" | "dec")}>
             <TabsList className="h-9">
-              <TabsTrigger value="hex" className="text-xs px-2 py-0">Hex</TabsTrigger>
-              <TabsTrigger value="dec" className="text-xs px-2 py-0">Decimal</TabsTrigger>
+              <TabsTrigger value="hex" className="text-xs">Hex</TabsTrigger>
+              <TabsTrigger value="dec" className="text-xs">Dec</TabsTrigger>
             </TabsList>
           </Tabs>
           {!decodedLogs.length && (
@@ -65,15 +65,15 @@ export function TransactionLogs({ receipt, decodedLogs, onDecodedLogs }: Transac
           return (
             <div key={index} className="bg-muted p-3 rounded-md overflow-x-auto">
               <div className="flex items-start mb-2">
-                <span className="text-xs w-16 font-medium">Log #{index}</span>
-                <a 
+                <span className="text-xs w-[54px] font-medium">Log #{index}</span>
+                <a
                   href={`#/address/${decodedLog ? decodedLog.address : rawLog.address}`} 
                   className="text-xs text-primary hover:underline font-mono"
                 >
                   {decodedLog ? decodedLog.address : rawLog.address}
                 </a>
               </div>
-              
+
               {decodedLog ? (
                 <div className="mb-2">
                   <div className="text-xs font-semibold text-primary mb-1">Event: {decodedLog.name}</div>
@@ -96,7 +96,7 @@ export function TransactionLogs({ receipt, decodedLogs, onDecodedLogs }: Transac
                       ))}
                     </div>
                   )}
-                  
+
                   {rawLog.data && rawLog.data !== '0x' && (
                     <div>
                       <div className="text-xs font-medium mb-1">Data:</div>

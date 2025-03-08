@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { getBalance, getTransactionCount, getCode } from "../lib/blockchain";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { Button } from "./ui/button";
+import { AddressType } from "./address/AddressType";
 
 interface AddressDetailsProps {
   address: string;
@@ -90,33 +91,10 @@ export function AddressDetails({ address, onBack }: AddressDetailsProps) {
               </div>
             </div>
 
-            <div>
-              <h3 className="text-sm font-medium text-muted-foreground">Type</h3>
-              <p className="text-sm">{isContract ? "Contract" : "Externally Owned Account (EOA)"}</p>
-            </div>
+            <AddressType isContract={isContract} address={address} />
           </div>
         </CardContent>
       </Card>
-
-      {isContract && (
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-xl">Contract Information</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="grid gap-4">
-              <div>
-                <h3 className="text-sm font-medium text-muted-foreground">Contract Creator</h3>
-                <p className="text-sm text-muted-foreground">Not available in basic view</p>
-              </div>
-              <div>
-                <h3 className="text-sm font-medium text-muted-foreground">Creation Transaction</h3>
-                <p className="text-sm text-muted-foreground">Not available in basic view</p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-      )}
     </div>
   );
 }

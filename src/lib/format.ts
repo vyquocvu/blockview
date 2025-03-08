@@ -10,3 +10,9 @@ export const hexToDecimal = (hexStr: string): string => {
     return hexStr; // Return original if conversion fails
   }
 };
+
+// Function to format address for display (shortened form)
+export function formatAddress(address: string) {
+  if (!address) return "";
+  return `${address.substring(0, 6)}...${address.substring(address.length - 4)}`;
+}

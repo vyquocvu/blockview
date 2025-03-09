@@ -169,7 +169,7 @@ export function BlockDetails({ blockNumber, onBack }: BlockDetailsProps) {
           {block.transactions.length === 0 ? (
             <p className="text-sm text-muted-foreground">No transactions in this block</p>
           ) : (
-            <div className="border rounded-lg overflow-hidden">
+            <div className="border rounded-lg overflow-hidden text-left">
               <table className="w-full">
                 <thead className="bg-muted">
                   <tr>

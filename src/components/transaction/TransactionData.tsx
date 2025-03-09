@@ -2,6 +2,7 @@ import { useState } from "react";
 import { TransactionDecoder } from "./TransactionDecoder";
 import { Tabs, TabsList, TabsTrigger } from "../ui/tabs";
 import { hexToDecimal } from "@/lib/format";
+import { commonData } from "@/constant/keccak";
 
 type DecodedFunction = {
   name: string;
@@ -75,9 +76,23 @@ export function TransactionData({
             ))}
           </div>
         ) : (
-          <pre className="text-xs text-left font-mono break-all whitespace-pre-wrap">
-            {dataFormat === "hex" ? transactionData : hexToDecimal(transactionData)}
-          </pre>
+          <div>
+            {transactionData.length >= 10 && (
+              <div className="mb-2">
+                {commonData
+                  .filter(item => item.type === "Function Signature")
+                  .map(item => item.hash)
+                  .includes(transactionData.substring(0, 10)) && (
+                  <div className="text-xs text-primary font-medium">
+                    Known Function: {commonData.find(item => item.hash === transactionData.substring(0, 10))?.description}
+                  </div>
+                )}
+              </div>
+            )}
+            <pre className="text-xs text-left font-mono break-all whitespace-pre-wrap">
+              {dataFormat === "hex" ? transactionData : hexToDecimal(transactionData)}
+            </pre>
+          </div>
         )}
       </div>
     </div>

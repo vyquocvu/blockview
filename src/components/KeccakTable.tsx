@@ -1,53 +1,8 @@
 import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { Input } from "./ui/input";
-import { ethers } from "ethers";
+import { commonData } from "@/constant/keccak";
 
-interface HashData {
-  input: string;
-  type: string;
-  description: string;
-  hash: string;
-}
-
-const commonData: HashData[] = [
-  {
-    input: "transfer(address,uint256)",
-    type: "Function Signature",
-    description: "ERC20 Transfer Function",
-    hash: ethers.keccak256(ethers.toUtf8Bytes("transfer(address,uint256)")).substring(0, 10)
-  },
-  {
-    input: "approve(address,uint256)",
-    type: "Function Signature",
-    description: "ERC20 Approve Function",
-    hash: ethers.keccak256(ethers.toUtf8Bytes("approve(address,uint256)")).substring(0, 10)
-  },
-  {
-    input: "Transfer(address,address,uint256)",
-    type: "Event Signature",
-    description: "ERC20 Transfer Event",
-    hash: ethers.keccak256(ethers.toUtf8Bytes("Transfer(address,address,uint256)"))
-  },
-  {
-    input: "Approval(address,address,uint256)",
-    type: "Event Signature",
-    description: "ERC20 Approval Event",
-    hash: ethers.keccak256(ethers.toUtf8Bytes("Approval(address,address,uint256)"))
-  },
-  {
-    input: "balanceOf(address)",
-    type: "Function Signature",
-    description: "ERC20/ERC721 Balance Query",
-    hash: ethers.keccak256(ethers.toUtf8Bytes("balanceOf(address)")).substring(0, 10)
-  },
-  {
-    input: "owner()",
-    type: "Function Signature",
-    description: "Owner Query",
-    hash: ethers.keccak256(ethers.toUtf8Bytes("owner()")).substring(0, 10)
-  }
-];
 
 export function KeccakTable() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -83,7 +38,7 @@ export function KeccakTable() {
             className="max-w-sm"
           />
 
-          <div className="border rounded-lg overflow-hidden">
+          <div className="border rounded-lg overflow-hidden text-left">
             <table className="w-full">
               <thead className="bg-muted">
                 <tr>
@@ -102,7 +57,7 @@ export function KeccakTable() {
                     <td className="px-4 py-3">
                       <button
                         onClick={() => copyToClipboard(item.hash)}
-                        className="font-mono text-sm text-primary hover:underline"
+                        className="font-mono text-sm text-primary hover:underline break-all whitespace-pre-wrap"
                         title="Click to copy"
                       >
                         {item.hash}

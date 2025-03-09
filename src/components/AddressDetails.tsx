@@ -71,26 +71,22 @@ export function AddressDetails({ address, onBack }: AddressDetailsProps) {
 
       <Card>
         <CardHeader>
-          <CardTitle className="text-xl">Overview</CardTitle>
+          <CardTitle className="text-xl text-left">Overview</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="grid gap-4">
-            <div>
-              <h3 className="text-sm font-medium text-muted-foreground">Address</h3>
+          <div className="grid gap-1 text-left">
+            <div className="flex">
+              <h3 className="text-sm w-28 font-medium text-muted-foreground">Address</h3>
               <p className="text-sm font-mono break-all">{address}</p>
             </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <h3 className="text-sm font-medium text-muted-foreground">Balance</h3>
-                <p className="text-sm">{balance} VIC</p>
-              </div>
-              <div>
-                <h3 className="text-sm font-medium text-muted-foreground">Transactions</h3>
-                <p className="text-sm">{transactionCount}</p>
-              </div>
+            <div className="flex">
+              <h3 className="text-sm w-28 font-medium text-muted-foreground">Balance</h3>
+              <p className="text-sm">{balance} VIC</p>
             </div>
-
+            <div className="flex">
+              <h3 className="text-sm w-28 font-medium text-muted-foreground">Transactions</h3>
+              <p className="text-sm">{transactionCount}</p>
+            </div>
             <AddressType isContract={isContract} address={address} />
           </div>
         </CardContent>

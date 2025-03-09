@@ -3,6 +3,7 @@ import { TransactionReceipt } from "ethers";
 import { EventLogsDecoder } from "./TransactionDecoder";
 import { Tabs, TabsList, TabsTrigger } from "../ui/tabs";
 import { hexToDecimal } from "@/lib/format";
+import { commonData } from "@/constant/keccak";
 
 type DecodedLog = {
   name: string;
@@ -91,7 +92,23 @@ export function TransactionLogs({ receipt, decodedLogs, onDecodedLogs }: Transac
                       <div className="text-xs font-medium mb-1">Topics:</div>
                       {rawLog.topics.map((topic, topicIndex) => (
                         <div key={topicIndex} className="text-xs font-mono break-all pl-2 border-l-2 border-muted-foreground/30">
-                          {topicIndex === 0 ? "Event Signature: " : `Param #${topicIndex}: `}{dataFormat === "hex" ? topic : hexToDecimal(topic)}
+                          {topicIndex === 0 ? (
+                            <>
+                              Event Signature: {topic}
+                              {commonData
+                                .filter(item => item.type === "Event Signature")
+                                .map(item => item.hash)
+                                .includes(topic) && (
+                                <div className="text-primary font-medium mt-1">
+                                  Known Event: {commonData.find(item => item.hash === topic)?.description}
+                                </div>
+                              )}
+                            </>
+                          ) : (
+                            <>
+                              {`Param #${topicIndex}: `}{dataFormat === "hex" ? topic : hexToDecimal(topic)}
+                            </>
+                          )}
                         </div>
                       ))}
                     </div>

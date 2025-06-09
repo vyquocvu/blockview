@@ -9,8 +9,8 @@ interface AddressTypeProps {
 }
 
 export function AddressType({ isContract, address }: AddressTypeProps) {
-  const [contractCreator] = useState<string | null>(null);
-  const [creationTx] = useState<string | null>(null);
+  const [contractCreator, setContractCreator] = useState<string | null>(null);
+  const [creationTx, setCreationTx] = useState<string | null>(null);
   const [contractCode, setContractCode] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
@@ -24,14 +24,14 @@ export function AddressType({ isContract, address }: AddressTypeProps) {
         setError(null);
         
         // Get the transaction history for this address to find the contract creation
-        // const history =  [] //await provider.getHistory(address);
-        
-        // // The first transaction in the history should be the contract creation
-        // if (history && history.length > 0) {
-        //   const creationTransaction = history[0];
-        //   setCreationTx(creationTransaction.hash);
-        //   setContractCreator(creationTransaction.from);
-        // }
+        const history = await provider.getHistory(address);
+
+        // The first transaction in the history should be the contract creation
+        if (history && history.length > 0) {
+          const creationTransaction = history[0];
+          setCreationTx(creationTransaction.hash);
+          setContractCreator(creationTransaction.from);
+        }
       } catch (err) {
         console.error("Error fetching contract information:", err);
         setError("Failed to fetch contract information");

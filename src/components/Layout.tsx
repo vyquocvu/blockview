@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Card, CardContent } from "./ui/card";
 import { RpcUrlDialog } from "./RpcUrlDialog";
+import { WalletConnectButton } from "./WalletConnectButton";
+import { useWallet } from "../context/WalletContext";
 import { provider } from "@/lib/blockchain";
 
 interface LayoutProps {
@@ -9,6 +11,7 @@ interface LayoutProps {
 
 export function Layout({ children }: LayoutProps) {
 
+  const { account } = useWallet();
   const [chainId, setChainId] = useState<number | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -55,7 +58,11 @@ export function Layout({ children }: LayoutProps) {
             <a href="#/blocks" className="text-sm font-medium transition-colors hover:text-primary">Blocks</a>
             <a href="#/accounts" className="text-sm font-medium transition-colors hover:text-primary">Accounts</a>
             <a href="#/tokens" className="text-sm font-medium transition-colors hover:text-primary">Tokens</a>
+            {account && (
+              <a href={`#/profile/${account}`} className="text-sm font-medium transition-colors hover:text-primary">Profile</a>
+            )}
             <div className="flex items-center space-x-2">
+              <WalletConnectButton />
               <RpcUrlDialog onUpdate={fetchNetworkInfo} />
             </div>
           </nav>

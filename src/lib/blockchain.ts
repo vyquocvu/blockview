@@ -168,4 +168,36 @@ export async function getNftHoldings(address: string) {
   return results;
 }
 
+const ERC20_DETECTION_ABI = [
+  "function name() view returns (string)",
+  "function symbol() view returns (string)",
+  "function decimals() view returns (uint8)",
+];
+
+export interface Erc20Info {
+  name: string;
+  symbol: string;
+  decimals: number;
+}
+
+export async function getErc20Info(
+  address: string,
+): Promise<Erc20Info | null> {
+  try {
+    const contract = new ethers.Contract(address, ERC20_DETECTION_ABI, provider);
+    const [name, symbol, decimals] = await Promise.all([
+      contract.name(),
+      contract.symbol(),
+      contract.decimals(),
+    ]);
+    return { name, symbol, decimals };
+  } catch {
+    return null;
+  }
+}
+
+export async function isErc20Contract(address: string) {
+  return (await getErc20Info(address)) !== null;
+}
+
 export { provider };

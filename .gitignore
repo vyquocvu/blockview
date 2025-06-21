@@ -22,3 +22,7 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+.pnp.cjs
+.pnp.loader.mjs
+.yarn/
+yarn.lock

@@ -58,6 +58,7 @@ export function Layout({ children }: LayoutProps) {
             <a href="#/blocks" className="text-sm font-medium transition-colors hover:text-primary">Blocks</a>
             <a href="#/accounts" className="text-sm font-medium transition-colors hover:text-primary">Accounts</a>
             <a href="#/tokens" className="text-sm font-medium transition-colors hover:text-primary">Tokens</a>
+            <a href="#/helper" className="text-sm font-medium transition-colors hover:text-primary">Helper</a>
             {account && (
               <a href={`#/profile/${account}`} className="text-sm font-medium transition-colors hover:text-primary">Profile</a>
             )}

@@ -12,6 +12,7 @@ import { NetworkInfo } from './components/NetworkInfo'
 import { NetworkProvider } from './context/NetworkContext'
 import { WalletProvider } from './context/WalletContext'
 import { KeccakTable } from './components/KeccakTable'
+import { UnitHelper } from './components/UnitHelper'
 
 function App() {
   const [route, setRoute] = useState<string>('blocks')
@@ -92,6 +93,8 @@ function App() {
         return <Profile address={params.address} onBack={navigateToBlocks} />
       case 'keccak':
         return <KeccakTable />
+      case 'helper':
+        return <UnitHelper />
       default:
         return (
           <>

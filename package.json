@@ -1,6 +1,7 @@
 {
   "name": "blockchain-explorer",
   "private": true,
+  "packageManager": "yarn@4.9.1",
   "version": "0.0.0",
   "type": "module",
   "scripts": {

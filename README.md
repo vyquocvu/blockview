@@ -1,5 +1,16 @@
 # React + TypeScript + Vite
 
+This project uses **Yarn** with Plug'n'Play (PnP) for dependency
+management. When running the project scripts make sure to use `yarn`
+instead of `npm`. For example, build the project with:
+
+```bash
+yarn build
+```
+
+Running `npm` directly will fail to resolve dependencies because the
+node modules are managed by PnP.
+
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
 Currently, two official plugins are available:

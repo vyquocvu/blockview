@@ -5,10 +5,12 @@ import { BlockList } from './components/BlockList'
 import { BlockDetails } from './components/BlockDetails'
 import { TransactionDetails } from './components/TransactionDetails'
 import { AddressDetails } from './components/AddressDetails'
+import { Profile } from './components/Profile'
 import { BlockCounter } from './components/BlockCounter'
 import { SearchBar } from './components/SearchBar'
 import { NetworkInfo } from './components/NetworkInfo'
 import { NetworkProvider } from './context/NetworkContext'
+import { WalletProvider } from './context/WalletContext'
 import { KeccakTable } from './components/KeccakTable'
 
 function App() {
@@ -37,6 +39,8 @@ function App() {
       } else if (routeName === 'tx' && routeParams[0]) {
         newParams.txHash = routeParams[0]
       } else if (routeName === 'address' && routeParams[0]) {
+        newParams.address = routeParams[0]
+      } else if (routeName === 'profile' && routeParams[0]) {
         newParams.address = routeParams[0]
       }
       
@@ -84,6 +88,8 @@ function App() {
         return <TransactionDetails txHash={params.txHash} onBack={navigateToBlocks} />
       case 'address':
         return <AddressDetails address={params.address} onBack={navigateToBlocks} />
+      case 'profile':
+        return <Profile address={params.address} onBack={navigateToBlocks} />
       case 'keccak':
         return <KeccakTable />
       default:
@@ -102,9 +108,11 @@ function App() {
 
   return (
     <NetworkProvider>
-      <Layout>
-        {renderContent()}
-      </Layout>
+      <WalletProvider>
+        <Layout>
+          {renderContent()}
+        </Layout>
+      </WalletProvider>
     </NetworkProvider>
   )
 }

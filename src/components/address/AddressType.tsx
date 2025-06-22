@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
-import { provider } from "../../lib/blockchain";
+import { provider, getErc20Info } from "../../lib/blockchain";
 import { formatAddress } from "../../lib/format";
 
 interface AddressTypeProps {
@@ -14,6 +14,10 @@ export function AddressType({ isContract, address }: AddressTypeProps) {
   const [contractCode, setContractCode] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
+  const [erc20Info, setErc20Info] = useState<
+    | { name: string; symbol: string; decimals: number }
+    | null
+  >(null);
 
   useEffect(() => {
     const fetchContractInfo = async () => {
@@ -46,6 +50,9 @@ export function AddressType({ isContract, address }: AddressTypeProps) {
       provider.getCode(address).then((code) => {
         setContractCode(code);
       });
+      getErc20Info(address).then(setErc20Info);
+    } else {
+      setErc20Info(null);
     }
   }, [isContract, address]);
 
@@ -53,7 +60,17 @@ export function AddressType({ isContract, address }: AddressTypeProps) {
     <>
       <div>
         <h3 className="text-sm font-medium text-muted-foreground">Type</h3>
-        <p className="text-sm">{isContract ? "Contract" : "Externally Owned Account (EOA)"}</p>
+        <p className="text-sm">
+          {isContract ? "Contract" : "Externally Owned Account (EOA)"}
+          {isContract && erc20Info !== null && (
+            <span className="ml-2">
+              ERC20{erc20Info.symbol ? ` (${erc20Info.symbol})` : ""}
+            </span>
+          )}
+          {isContract && erc20Info === null && (
+            <span className="ml-2">Not ERC20</span>
+          )}
+        </p>
       </div>
 
       {isContract && (
@@ -95,6 +112,22 @@ export function AddressType({ isContract, address }: AddressTypeProps) {
                   <p className="text-sm text-muted-foreground">Not available</p>
                 )}
               </div>
+              {erc20Info && (
+                <>
+                  <div className="flex">
+                    <h3 className="text-sm w-40 text-left font-medium text-muted-foreground">Token Name</h3>
+                    <p className="text-sm">{erc20Info.name}</p>
+                  </div>
+                  <div className="flex">
+                    <h3 className="text-sm w-40 text-left font-medium text-muted-foreground">Token Symbol</h3>
+                    <p className="text-sm">{erc20Info.symbol}</p>
+                  </div>
+                  <div className="flex">
+                    <h3 className="text-sm w-40 text-left font-medium text-muted-foreground">Decimals</h3>
+                    <p className="text-sm">{erc20Info.decimals}</p>
+                  </div>
+                </>
+              )}
               {
                 contractCode && (
                   <div className="text-left">

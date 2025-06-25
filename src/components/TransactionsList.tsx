@@ -1,6 +1,7 @@
 import { TransactionResponse } from "ethers";
 import { useEffect, useState } from "react";
-import { getTransaction, formatAddress } from "../lib/blockchain";
+import { getTransaction } from "../lib/blockchain";
+import { formatAddress } from "../lib/format";
 import { Button } from "./ui/button";
 import { Switch } from "./ui/switch";
 import { Label } from "./ui/label";

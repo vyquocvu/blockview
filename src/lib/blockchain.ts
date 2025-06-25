@@ -107,11 +107,6 @@ export async function getCode(address: string) {
   }
 }
 
-// Function to format address for display
-export function formatAddress(address: string) {
-  if (!address) return "";
-  return `${address.substring(0, 6)}...${address.substring(address.length - 4)}`;
-}
 
 // Function to format timestamp to date
 export function formatTimestamp(timestamp: number) {

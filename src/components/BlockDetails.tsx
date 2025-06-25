@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { getBlock, getTransaction, formatTimestamp, formatAddress } from "../lib/blockchain";
+import { getBlock, getTransaction, formatTimestamp } from "../lib/blockchain";
+import { formatAddress } from "../lib/format";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { Button } from "./ui/button";
 import {

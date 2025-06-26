@@ -13,6 +13,10 @@ import { NetworkProvider } from './context/NetworkContext'
 import { WalletProvider } from './context/WalletContext'
 import { KeccakTable } from './components/KeccakTable'
 import { UnitHelper } from './components/UnitHelper'
+import { TransactionsPage } from './components/TransactionsPage'
+import { AccountsPage } from './components/AccountsPage'
+import { TokensPage } from './components/TokensPage'
+import { TokenDetails } from './components/TokenDetails'
 
 function App() {
   const [route, setRoute] = useState<string>('blocks')
@@ -43,6 +47,8 @@ function App() {
         newParams.address = routeParams[0]
       } else if (routeName === 'profile' && routeParams[0]) {
         newParams.address = routeParams[0]
+      } else if (routeName === 'token' && routeParams[0]) {
+        newParams.address = routeParams[0]
       }
       
       // Handle query parameters
@@ -69,6 +75,10 @@ function App() {
     window.location.hash = '/blocks'
   }
 
+  const navigateToTokens = () => {
+    window.location.hash = '/tokens'
+  }
+
   // Render the appropriate component based on the current route
   const renderContent = () => {
     switch (route) {
@@ -91,6 +101,14 @@ function App() {
         return <AddressDetails address={params.address} onBack={navigateToBlocks} />
       case 'profile':
         return <Profile address={params.address} onBack={navigateToBlocks} />
+      case 'transactions':
+        return <TransactionsPage />
+      case 'accounts':
+        return <AccountsPage />
+      case 'tokens':
+        return <TokensPage />
+      case 'token':
+        return <TokenDetails address={params.address} onBack={navigateToTokens} />
       case 'keccak':
         return <KeccakTable />
       case 'helper':

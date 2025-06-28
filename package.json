@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build",
+    "build": "tsc -b && mkdir -p dist && cp index.html dist/index.html",
     "lint": "tsc --noEmit",
     "preview": "vite preview"
   },

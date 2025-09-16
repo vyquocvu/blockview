@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Label } from "./ui/label";
 import { Input } from "./ui/input";
-import { getBlock, provider } from "@/lib/blockchain";
+import { getBlock, provider } from "../lib/blockchain";
 
 export function BlockTimeConverter() {
   const [blockNumber, setBlockNumber] = useState("");

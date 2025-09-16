@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { TransactionDecoder } from "./TransactionDecoder";
 import { Tabs, TabsList, TabsTrigger } from "../ui/tabs";
-import { hexToDecimal } from "@/lib/format";
+import { hexToDecimal } from "../../lib/format";
 
 type DecodedFunction = {
   name: string;

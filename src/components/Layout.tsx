@@ -3,7 +3,7 @@ import { Card, CardContent } from "./ui/card";
 import { RpcUrlDialog } from "./RpcUrlDialog";
 import { WalletConnectButton } from "./WalletConnectButton";
 import { useWallet } from "../context/WalletContext";
-import { provider } from "@/lib/blockchain";
+import { provider } from "../lib/blockchain";
 
 interface LayoutProps {
   children: React.ReactNode;

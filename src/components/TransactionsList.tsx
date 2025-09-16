@@ -1,6 +1,6 @@
 import { TransactionResponse } from "ethers";
 import { useEffect, useState } from "react";
-import { getTransaction } from "../lib/blockchain";
+import { getTransaction, getLatestBlockNumber, getBlock } from "../lib/blockchain";
 import { formatAddress } from "../lib/format";
 import { Button } from "./ui/button";
 import { Switch } from "./ui/switch";
@@ -17,22 +17,18 @@ export function TransactionsList() {
       setLoading(true);
       setError(null);
       // Get the latest block number and fetch transactions from recent blocks
-      const latestBlockNumber = await window.ethereum.request({ method: 'eth_blockNumber' });
-      const blockNum = parseInt(latestBlockNumber, 16);
+      const latestBlockNumber = await getLatestBlockNumber();
       const txPromises = [];
       // Get transactions from the last 5 blocks
       for (let i = 0; i < 5; i++) {
-        if (blockNum - i >= 0) {
-          const block = await window.ethereum.request({ 
-            method: 'eth_getBlockByNumber', 
-            params: ["0x" + (blockNum - i).toString(16), true]
-          });
+        if (latestBlockNumber - i >= 0) {
+          const block = await getBlock(latestBlockNumber - i);
           
           if (block && block.transactions) {
             // Take up to 5 transactions from each block
             const blockTxs = block.transactions.slice(0, 5);
-            for (const tx of blockTxs) {
-              txPromises.push(getTransaction(tx.hash));
+            for (const txHash of blockTxs) {
+              txPromises.push(getTransaction(txHash as string));
             }
           }
         }

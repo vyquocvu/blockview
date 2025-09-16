@@ -191,6 +191,102 @@ export async function getErc20Info(
   }
 }
 
+// Function to get gas price
+export async function getGasPrice() {
+  try {
+    const gasPrice = await provider.getFeeData();
+    return gasPrice;
+  } catch (error) {
+    console.error("Error fetching gas price:", error);
+    throw error;
+  }
+}
+
+// Function to estimate gas for a transaction
+export async function estimateGas(transaction: {
+  from?: string;
+  to?: string;
+  value?: string;
+  data?: string;
+}) {
+  try {
+    return await provider.estimateGas(transaction);
+  } catch (error) {
+    console.error("Error estimating gas:", error);
+    throw error;
+  }
+}
+
+// Function to get logs with filters
+export async function getLogs(filter: {
+  fromBlock?: number | string;
+  toBlock?: number | string;
+  address?: string | string[];
+  topics?: Array<string | string[] | null>;
+}) {
+  try {
+    return await provider.getLogs(filter);
+  } catch (error) {
+    console.error("Error fetching logs:", error);
+    throw error;
+  }
+}
+
+// Function to get storage at a specific position
+export async function getStorageAt(address: string, position: string, blockTag?: number | string) {
+  try {
+    return await provider.getStorage(address, position, blockTag);
+  } catch (error) {
+    console.error(`Error fetching storage for ${address} at position ${position}:`, error);
+    throw error;
+  }
+}
+
+// Function to get network information
+export async function getNetworkInfo() {
+  try {
+    const network = await provider.getNetwork();
+    return {
+      name: network.name,
+      chainId: Number(network.chainId),
+      ensAddress: network.ensAddress
+    };
+  } catch (error) {
+    console.error("Error fetching network info:", error);
+    throw error;
+  }
+}
+
+// Function to get block by hash
+export async function getBlockByHash(blockHash: string, includeTransactions: boolean = false) {
+  try {
+    return await provider.getBlock(blockHash, includeTransactions);
+  } catch (error) {
+    console.error(`Error fetching block by hash ${blockHash}:`, error);
+    throw error;
+  }
+}
+
+// Function to make raw RPC calls
+export async function makeRpcCall(method: string, params: any[] = []) {
+  try {
+    return await provider.send(method, params);
+  } catch (error) {
+    console.error(`Error making RPC call ${method}:`, error);
+    throw error;
+  }
+}
+
+// Function to get pending transactions (if supported by the RPC)
+export async function getPendingTransactions() {
+  try {
+    return await makeRpcCall('txpool_content');
+  } catch (error) {
+    console.error("Error fetching pending transactions:", error);
+    throw error;
+  }
+}
+
 export async function isErc20Contract(address: string) {
   return (await getErc20Info(address)) !== null;
 }

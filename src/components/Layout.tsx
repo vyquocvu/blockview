@@ -34,9 +34,21 @@ export function Layout({ children }: LayoutProps) {
 
   const renderChildren = () => {
     if (loading) {
-      return <p>Loading...</p>;
+      return (
+        <div>
+          <p>Loading...</p>
+          {/* Show children anyway in case of demo/testing */}
+          {children}
+        </div>
+      );
     } else if (error) {
-      return <p>Error: {error}</p>;
+      return (
+        <div>
+          <p>Error: {error}</p>
+          {/* Show children even with network error for demo purposes */}
+          {children}
+        </div>
+      );
     } else {
       // Check if children is a valid React element before using cloneElement
       return React.isValidElement(children) 
@@ -58,6 +70,8 @@ export function Layout({ children }: LayoutProps) {
             <a href="#/blocks" className="text-sm font-medium transition-colors hover:text-primary">Blocks</a>
             <a href="#/accounts" className="text-sm font-medium transition-colors hover:text-primary">Accounts</a>
             <a href="#/tokens" className="text-sm font-medium transition-colors hover:text-primary">Tokens</a>
+            <a href="#/logs" className="text-sm font-medium transition-colors hover:text-primary">Logs</a>
+            <a href="#/rpc" className="text-sm font-medium transition-colors hover:text-primary">RPC</a>
             <a href="#/helper" className="text-sm font-medium transition-colors hover:text-primary">Helper</a>
             {account && (
               <a href={`#/profile/${account}`} className="text-sm font-medium transition-colors hover:text-primary">Profile</a>

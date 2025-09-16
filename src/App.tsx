@@ -9,6 +9,9 @@ import { Profile } from './components/Profile'
 import { BlockCounter } from './components/BlockCounter'
 import { SearchBar } from './components/SearchBar'
 import { NetworkInfo } from './components/NetworkInfo'
+import { GasTracker } from './components/GasTracker'
+import { RpcInterface } from './components/RpcInterface'
+import { EventLogFilter } from './components/EventLogFilter'
 import { NetworkProvider } from './context/NetworkContext'
 import { WalletProvider } from './context/WalletContext'
 import { KeccakTable } from './components/KeccakTable'
@@ -90,6 +93,7 @@ function App() {
               <NetworkInfo />
               <BlockCounter />
             </div>
+            <GasTracker />
             <BlockList />
           </>
         )
@@ -113,6 +117,10 @@ function App() {
         return <KeccakTable />
       case 'helper':
         return <UnitHelper />
+      case 'rpc':
+        return <RpcInterface />
+      case 'logs':
+        return <EventLogFilter />
       default:
         return (
           <>
@@ -121,6 +129,7 @@ function App() {
               <NetworkInfo />
               <BlockCounter />
             </div>
+            <GasTracker />
             <BlockList />
           </>
         )

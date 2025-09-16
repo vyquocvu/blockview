@@ -1,21 +1,39 @@
 import { useEffect, useState } from "react";
-import { provider } from "../lib/blockchain";
+import { provider, getNetworkInfo, makeRpcCall } from "../lib/blockchain";
 import { Card, CardContent } from "./ui/card";
 
 export function NetworkInfo() {
   const [loading, setLoading] = useState(true);
   const [network, setNetwork] = useState<any | null>(null);
+  const [clientVersion, setClientVersion] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchNetworkInfo = async () => {
       try {
         setError(null);
-        const network = await provider.getNetwork();
+        // Get basic network info
+        const networkData = await provider.getNetwork();
+        
+        // Fetch chain list to get network name
         const chainList = await fetch('https://chainid.network/chains_mini.json');
         const chainListData = await chainList.json();
-        const chain = chainListData.find((chain: any) => chain.chainId === Number(network.chainId));
-        setNetwork(chain);
+        const chain = chainListData.find((chain: any) => chain.chainId === Number(networkData.chainId));
+        
+        // Try to get client version via RPC
+        let clientVer = null;
+        try {
+          clientVer = await makeRpcCall('web3_clientVersion');
+        } catch (err) {
+          console.log("Client version not available:", err);
+        }
+        
+        setNetwork(chain || {
+          chainId: Number(networkData.chainId),
+          name: `Unknown Network (${networkData.chainId})`,
+          nativeCurrency: { symbol: 'ETH' }
+        });
+        setClientVersion(clientVer);
         setLoading(false);
       } catch (err) {
         console.error("Error fetching network info:", err);
@@ -36,6 +54,11 @@ export function NetworkInfo() {
           <div>
             <h2 className="text-2xl font-bold">Network Information</h2>
             <p className="text-muted-foreground">{network?.name}</p>
+            {clientVersion && (
+              <p className="text-xs text-muted-foreground mt-1">
+                Client: {clientVersion}
+              </p>
+            )}
           </div>
           <div className="text-right">
             {error ? (

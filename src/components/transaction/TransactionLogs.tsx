@@ -2,7 +2,7 @@ import { useState } from "react";
 import { TransactionReceipt } from "ethers";
 import { EventLogsDecoder } from "./TransactionDecoder";
 import { Tabs, TabsList, TabsTrigger } from "../ui/tabs";
-import { hexToDecimal } from "@/lib/format";
+import { hexToDecimal } from "../../lib/format";
 
 type DecodedLog = {
   name: string;

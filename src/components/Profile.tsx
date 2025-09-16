@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { Button } from "./ui/button";
-import { getTokenBalances, getNftHoldings } from "@/lib/blockchain";
-import type { Erc20Token, Erc721Token } from "@/lib/tokens";
-import { formatAddress } from "@/lib/format";
+import { getTokenBalances, getNftHoldings } from "../lib/blockchain";
+import type { Erc20Token, Erc721Token } from "../lib/tokens";
+import { formatAddress } from "../lib/format";
 import { useWallet } from "../context/WalletContext";
 
 interface ProfileProps {

@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 import { provider, getNetworkInfo, makeRpcCall } from "../lib/blockchain";
 import { Card, CardContent } from "./ui/card";
+import { useNetwork } from "../context/NetworkContext";
 
 export function NetworkInfo() {
+  const { rpcUrl } = useNetwork();
   const [loading, setLoading] = useState(true);
   const [network, setNetwork] = useState<any | null>(null);
   const [clientVersion, setClientVersion] = useState<string | null>(null);
@@ -11,6 +13,7 @@ export function NetworkInfo() {
   useEffect(() => {
     const fetchNetworkInfo = async () => {
       try {
+        setLoading(true);
         setError(null);
         // Get basic network info
         const networkData = await provider.getNetwork();
@@ -42,7 +45,7 @@ export function NetworkInfo() {
       }
     };
     fetchNetworkInfo();
-  }, []);
+  }, [rpcUrl]); // Re-run when rpcUrl changes
 
   // Viction's native token is VIC
   const nativeToken = network?.nativeCurrency?.symbol;

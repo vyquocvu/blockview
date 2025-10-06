@@ -3,10 +3,11 @@ import { TransactionReceipt, TransactionResponse } from "ethers";
 
 import { Button } from "./ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
-import { getTransaction, getTransactionReceipt, formatTimestamp } from "../lib/blockchain";
+import { getTransaction, getTransactionReceipt, formatTimestamp, getDetailedTrace } from "../lib/blockchain";
 import { formatAddress } from "../lib/format";
 import { TransactionData } from "./transaction/TransactionData";
 import { TransactionLogs } from "./transaction/TransactionLogs";
+import { DetailedTrace } from "./transaction/DetailedTrace";
 
 interface TransactionDetailsProps {
   txHash: string;
@@ -35,6 +36,21 @@ export function TransactionDetails({ txHash, onBack }: TransactionDetailsProps) 
   const [error, setError] = useState<string | null>(null);
   const [decodedFunction, setDecodedFunction] = useState<DecodedFunction | null>(null);
   const [decodedLogs, setDecodedLogs] = useState<DecodedLog[]>([]);
+  const [trace, setTrace] = useState<any | null>(null);
+  const [traceLoading, setTraceLoading] = useState(false);
+
+  const handleFetchTrace = async () => {
+    setTraceLoading(true);
+    setTrace(null);
+    try {
+      const traceData = await getDetailedTrace(txHash);
+      setTrace(traceData);
+    } catch (err) {
+      console.error("Error fetching trace data:", err);
+    } finally {
+      setTraceLoading(false);
+    }
+  };
 
   useEffect(() => {
     const fetchTransactionData = async () => {
@@ -187,6 +203,12 @@ export function TransactionDetails({ txHash, onBack }: TransactionDetailsProps) 
               />
             )}
           </div>
+          <div className="mt-4">
+            <Button onClick={handleFetchTrace} disabled={traceLoading}>
+              {traceLoading ? "Loading Trace..." : "View Trace"}
+            </Button>
+          </div>
+          {trace && <DetailedTrace trace={trace} />}
         </CardContent>
       </Card>
     </div>

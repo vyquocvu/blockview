@@ -291,4 +291,32 @@ export async function isErc20Contract(address: string) {
   return (await getErc20Info(address)) !== null;
 }
 
+export async function getDetailedTrace(txHash: string) {
+  try {
+    const response = await fetch(rpcUrl, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        jsonrpc: "2.0",
+        method: "debug_traceTransaction",
+        params: [txHash, { tracer: "callTracer" }],
+        id: 1,
+      }),
+    });
+    const data = await response.json();
+
+    if (data.error) {
+      throw new Error(data.error.message);
+    }
+
+    if (data.result) {
+      return data.result;
+    }
+
+    return null;
+  } catch (err) {
+    return null;
+  }
+}
+
 export { provider };

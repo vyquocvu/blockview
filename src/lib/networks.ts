@@ -47,7 +47,7 @@ export const PREDEFINED_NETWORKS: Record<string, NetworkConfig> = {
     name: "Viction",
     chainId: 88,
     rpcUrls: [
-      "https://rpc.viction.xyz",
+      "https://rpc.vicscan.xyz/",
       "https://rpc.tomochain.com"
     ],
     nativeCurrency: {

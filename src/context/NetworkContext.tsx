@@ -17,7 +17,7 @@ const NetworkContext = createContext<NetworkContextType>({
 export function NetworkProvider({ children }: { children: ReactNode }) {
   const [chainId, setChainId] = useState<number | null>(null);
   const [rpcUrl, setRpcUrl] = useState<string | null>(
-    localStorage.getItem("custom_rpc_url") || "https://rpc.viction.xyz"
+    localStorage.getItem("custom_rpc_url") || "https://rpc.vicscan.xyz/"
   );
 
   return (

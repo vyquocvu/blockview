@@ -33,7 +33,7 @@ export function RpcUrlDialog({ onUpdate }: RpcUrlDialogProps) {
   const [selectedNetwork, setSelectedNetwork] = useState<string>("");
   const [selectedRpcIndex, setSelectedRpcIndex] = useState<number>(0);
   const [customRpcUrl, setCustomRpcUrl] = useState(
-    localStorage.getItem("custom_rpc_url") || "https://rpc.viction.xyz"
+    localStorage.getItem("custom_rpc_url") || "https://rpc.vicscan.xyz/"
   );
   const [activeTab, setActiveTab] = useState<string>("predefined");
   const [isSubmitting, setIsSubmitting] = useState(false);

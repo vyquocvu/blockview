@@ -2,7 +2,7 @@ import { ethers } from "ethers";
 import { ERC20_TOKENS, ERC721_TOKENS, type Erc20Token, type Erc721Token } from "./tokens";
 
 // Default RPC URL
-let rpcUrl = localStorage.getItem("custom_rpc_url") || "https://rpc.viction.xyz";
+let rpcUrl = localStorage.getItem("custom_rpc_url") || "https://rpc.vicscan.xyz/";
 
 // Initialize provider with the RPC URL
 let provider = new ethers.JsonRpcProvider(rpcUrl);

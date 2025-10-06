@@ -1,4 +1,5 @@
 import React from "react";
+import { JsonView } from "@/components/ui/json-view";
 
 interface Call {
   type: string;
@@ -35,8 +36,10 @@ const TraceEntry: React.FC<{ call: Call; depth: number }> = ({ call, depth }) =>
           <details>
             <summary className="cursor-pointer">Details</summary>
             <div className="pl-4">
-              <p><strong>Input:</strong> <textarea readOnly className="w-full h-24 bg-gray-100 dark:bg-gray-700 font-mono text-xs p-2 rounded-md" value={call.input} /></p>
-              <p><strong>Output:</strong> <textarea readOnly className="w-full h-24 bg-gray-100 dark:bg-gray-700 font-mono text-xs p-2 rounded-md" value={call.output} /></p>
+              <p><strong>Input:</strong></p>
+              <JsonView json={call.input} />
+              <p><strong>Output:</strong></p>
+              <JsonView json={call.output} />
             </div>
           </details>
         </div>

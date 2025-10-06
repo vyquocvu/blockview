@@ -1,6 +1,6 @@
 import React from "react";
-import { JsonView, collapseAllNested, darkStyles, defaultStyles } from "react-json-view-lite";
-import "react-json-view-lite/dist/index.css";
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
+import { atomOneLight } from 'react-syntax-highlighter/dist/esm/styles/hljs';
 
 interface Call {
   type: string;
@@ -24,19 +24,21 @@ export const DetailedTrace: React.FC<DetailedTraceProps> = ({ trace }) => {
     return null;
   }
 
-  // Check if dark mode is enabled by checking the document root class
-  const isDarkMode = document.documentElement.classList.contains('dark');
-
   return (
     <div className="mt-4 p-4 border rounded-lg">
       <h3 className="text-lg font-bold mb-2">Transaction Trace</h3>
       <div className="overflow-auto text-left">
-        <JsonView 
-          data={trace} 
-          shouldExpandNode={collapseAllNested}
-          style={isDarkMode ? darkStyles : defaultStyles}
-        />
+        <SyntaxHighlighter 
+          language="json" 
+          style={atomOneLight}
+          customStyle={{
+            margin: 0,
+            borderRadius: '0.375rem'
+          }}
+        >
+          {JSON.stringify(trace, null, 2)}
+        </SyntaxHighlighter>
       </div>
     </div>
   );
-};
+}

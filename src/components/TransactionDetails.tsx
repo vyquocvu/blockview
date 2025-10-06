@@ -210,17 +210,17 @@ export function TransactionDetails({ txHash, onBack }: TransactionDetailsProps) 
               />
             )}
           </div>
-          <div className="mt-4">
+          <div className="mt-4 flex items-center gap-4">
             <Button onClick={handleFetchTrace} disabled={traceLoading}>
-              {traceLoading ? "Loading Trace..." : "View Trace"}
+              {traceLoading ? "Loading Trace..." : "Fetch Trace"}
             </Button>
+            {trace && <DetailedTrace trace={trace} />}
           </div>
           {traceError && (
             <div className="mt-4 text-red-500 bg-red-100 dark:bg-red-900 p-3 rounded-md">
               <p><strong>Error fetching trace:</strong> {traceError}</p>
             </div>
           )}
-          {trace && <DetailedTrace trace={trace} />}
         </CardContent>
       </Card>
     </div>

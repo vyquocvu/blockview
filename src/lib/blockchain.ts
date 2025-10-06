@@ -306,16 +306,13 @@ export async function getDetailedTrace(txHash: string) {
     const data = await response.json();
 
     if (data.error) {
-      throw new Error(data.error.message);
+      throw new Error(`RPC Error: ${data.error.message}`);
     }
 
-    if (data.result) {
-      return data.result;
-    }
-
-    return null;
+    return data.result;
   } catch (err) {
-    return null;
+    console.error("Error fetching detailed trace:", err);
+    throw new Error("Failed to fetch detailed trace. See console for details.");
   }
 }
 

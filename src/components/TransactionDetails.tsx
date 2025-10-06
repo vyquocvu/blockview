@@ -38,15 +38,22 @@ export function TransactionDetails({ txHash, onBack }: TransactionDetailsProps) 
   const [decodedLogs, setDecodedLogs] = useState<DecodedLog[]>([]);
   const [trace, setTrace] = useState<any | null>(null);
   const [traceLoading, setTraceLoading] = useState(false);
+  const [traceError, setTraceError] = useState<string | null>(null);
 
   const handleFetchTrace = async () => {
     setTraceLoading(true);
     setTrace(null);
+    setTraceError(null);
     try {
       const traceData = await getDetailedTrace(txHash);
+      if (!traceData) {
+        throw new Error("Trace data is null or undefined.");
+      }
       setTrace(traceData);
     } catch (err) {
+      const errorMessage = err instanceof Error ? err.message : "An unknown error occurred.";
       console.error("Error fetching trace data:", err);
+      setTraceError(errorMessage);
     } finally {
       setTraceLoading(false);
     }
@@ -208,6 +215,11 @@ export function TransactionDetails({ txHash, onBack }: TransactionDetailsProps) 
               {traceLoading ? "Loading Trace..." : "View Trace"}
             </Button>
           </div>
+          {traceError && (
+            <div className="mt-4 text-red-500 bg-red-100 dark:bg-red-900 p-3 rounded-md">
+              <p><strong>Error fetching trace:</strong> {traceError}</p>
+            </div>
+          )}
           {trace && <DetailedTrace trace={trace} />}
         </CardContent>
       </Card>

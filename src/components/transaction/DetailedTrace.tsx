@@ -25,9 +25,9 @@ export const DetailedTrace: React.FC<DetailedTraceProps> = ({ trace }) => {
   }
 
   return (
-    <div className="mt-4 p-4 border rounded-lg bg-gray-50 dark:bg-gray-800">
+    <div className="mt-4 p-4 border rounded-lg">
       <h3 className="text-lg font-bold mb-2">Transaction Trace</h3>
-      <div className="overflow-auto">
+      <div className="overflow-auto text-left">
         <SyntaxHighlighter 
           language="json" 
           style={atomOneLight}
@@ -41,4 +41,4 @@ export const DetailedTrace: React.FC<DetailedTraceProps> = ({ trace }) => {
       </div>
     </div>
   );
-};
+}

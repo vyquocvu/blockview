@@ -8,6 +8,7 @@ import { formatAddress } from "../lib/format";
 import { TransactionData } from "./transaction/TransactionData";
 import { TransactionLogs } from "./transaction/TransactionLogs";
 import { DetailedTrace } from "./transaction/DetailedTrace";
+import { DebugApis } from "./transaction/DebugApis";
 
 interface TransactionDetailsProps {
   txHash: string;
@@ -39,6 +40,7 @@ export function TransactionDetails({ txHash, onBack }: TransactionDetailsProps) 
   const [trace, setTrace] = useState<any | null>(null);
   const [traceLoading, setTraceLoading] = useState(false);
   const [traceError, setTraceError] = useState<string | null>(null);
+  const [showDebugApis, setShowDebugApis] = useState(false);
 
   const handleFetchTrace = async () => {
     setTraceLoading(true);
@@ -214,11 +216,19 @@ export function TransactionDetails({ txHash, onBack }: TransactionDetailsProps) 
             <Button onClick={handleFetchTrace} disabled={traceLoading}>
               {traceLoading ? "Loading Trace..." : "Fetch Trace"}
             </Button>
+            <Button onClick={() => setShowDebugApis(!showDebugApis)} variant="outline">
+              {showDebugApis ? "Hide Debug APIs" : "Show Debug APIs"}
+            </Button>
             {trace && <DetailedTrace trace={trace} />}
           </div>
           {traceError && (
             <div className="mt-4 text-red-500 bg-red-100 dark:bg-red-900 p-3 rounded-md">
               <p><strong>Error fetching trace:</strong> {traceError}</p>
+            </div>
+          )}
+          {showDebugApis && (
+            <div className="mt-4">
+              <DebugApis txHash={txHash} />
             </div>
           )}
         </CardContent>

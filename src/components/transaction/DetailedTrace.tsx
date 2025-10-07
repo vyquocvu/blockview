@@ -24,12 +24,12 @@ interface DetailedTraceProps {
   trace: Call | null;
   onFetchTrace?: () => void;
   isLoading?: boolean;
+  compact?: boolean; // For rendering in card header
 }
 
-export const DetailedTrace: React.FC<DetailedTraceProps> = ({ trace, onFetchTrace, isLoading = false }) => {
+export const DetailedTrace: React.FC<DetailedTraceProps> = ({ trace, onFetchTrace, isLoading = false, compact = false }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isDark, setIsDark] = useState(false);
-  const [isFormatted, setIsFormatted] = useState(true);
   const [copied, setCopied] = useState(false);
   const [errorLines, setErrorLines] = useState<number[]>([]);
   const editorRef = useRef<any>(null);
@@ -65,7 +65,7 @@ export const DetailedTrace: React.FC<DetailedTraceProps> = ({ trace, onFetchTrac
       const lines = findErrorLines(trace);
       setErrorLines(lines);
     }
-  }, [trace, isFormatted]);
+  }, [trace]);
 
   useEffect(() => {
     if (editorRef.current && errorLines.length > 0 && isModalOpen) {
@@ -97,10 +97,10 @@ export const DetailedTrace: React.FC<DetailedTraceProps> = ({ trace, onFetchTrac
         }
       }, 100);
     }
-  }, [errorLines, isFormatted, isModalOpen]);
+  }, [errorLines, isModalOpen]);
 
-  const findErrorLines = (obj: any, lineNumbers: number[] = [], currentLine = 0): number[] => {
-    const jsonString = isFormatted ? JSON.stringify(obj, null, 2) : JSON.stringify(obj);
+  const findErrorLines = (obj: any): number[] => {
+    const jsonString = JSON.stringify(obj, null, 2);
     const lines = jsonString.split('\n');
     const result: number[] = [];
 
@@ -114,7 +114,7 @@ export const DetailedTrace: React.FC<DetailedTraceProps> = ({ trace, onFetchTrac
   };
 
   const getTraceContent = () => {
-    return isFormatted ? JSON.stringify(trace, null, 2) : JSON.stringify(trace);
+    return JSON.stringify(trace, null, 2);
   };
 
   const copyToClipboard = async () => {
@@ -146,23 +146,38 @@ export const DetailedTrace: React.FC<DetailedTraceProps> = ({ trace, onFetchTrac
 
   return (
     <>
-      <div className="mt-4">
+      {!compact && (
+        <div className="mt-4">
+          <Button 
+            onClick={handleButtonClick}
+            variant="outline"
+            className="w-full sm:w-auto"
+            disabled={isLoading}
+            aria-label="Fetch and view detailed trace in full-screen modal"
+          >
+            <Maximize2 className="mr-2 h-4 w-4" />
+            {isLoading ? "Loading Trace..." : trace ? "Debug trace" : "Fetch & View Trace"}
+          </Button>
+        </div>
+      )}
+
+      {compact && (
         <Button 
           onClick={handleButtonClick}
           variant="outline"
-          className="w-full sm:w-auto"
+          size="sm"
           disabled={isLoading}
           aria-label="Fetch and view detailed trace in full-screen modal"
         >
           <Maximize2 className="mr-2 h-4 w-4" />
-          {isLoading ? "Loading Trace..." : trace ? "View Detailed Trace" : "Fetch & View Trace"}
+          {isLoading ? "Loading..." : trace ? "Debug trace" : "Debug trace"}
         </Button>
-      </div>
+      )}
 
       {trace && (
         <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
           <DialogContent 
-            className="max-w-[95vw] w-[95vw] h-[90vh] max-h-[90vh] p-0 flex flex-col"
+            className="max-w-[100vw] w-[100vw] h-[100vh] max-h-[100vh] p-0 flex flex-col"
             aria-describedby="trace-description"
           >
             <DialogHeader className="p-6 pb-4 border-b">
@@ -173,24 +188,6 @@ export const DetailedTrace: React.FC<DetailedTraceProps> = ({ trace, onFetchTrac
             </DialogHeader>
             
             <div className="flex gap-2 px-6 py-3 border-b bg-muted/30">
-              <Button
-                size="sm"
-                variant={isFormatted ? "default" : "outline"}
-                onClick={() => setIsFormatted(true)}
-                aria-label="Show formatted JSON"
-                aria-pressed={isFormatted}
-              >
-                Formatted
-              </Button>
-              <Button
-                size="sm"
-                variant={!isFormatted ? "default" : "outline"}
-                onClick={() => setIsFormatted(false)}
-                aria-label="Show raw JSON"
-                aria-pressed={!isFormatted}
-              >
-                Raw
-              </Button>
               <div className="flex-1" />
               <Button
                 size="sm"

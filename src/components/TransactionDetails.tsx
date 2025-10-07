@@ -122,11 +122,6 @@ export function TransactionDetails({ txHash, onBack }: TransactionDetailsProps) 
       <div className="flex justify-between items-center">
         <h2 className="text-2xl font-bold">Transaction Details</h2>
         <div className="flex gap-2">
-          <DetailedTrace 
-            trace={trace} 
-            onFetchTrace={handleFetchTrace}
-            isLoading={traceLoading}
-          />
           {onBack && (
             <Button onClick={onBack} variant="outline">
               Go Back
@@ -137,7 +132,15 @@ export function TransactionDetails({ txHash, onBack }: TransactionDetailsProps) 
 
       <Card>
         <CardHeader>
-          <CardTitle className="text-xl text-left">Transaction {formatAddress(txHash)}</CardTitle>
+          <div className="flex justify-between items-start">
+            <CardTitle className="text-xl text-left">Transaction {formatAddress(txHash)}</CardTitle>
+            <DetailedTrace 
+              trace={trace} 
+              onFetchTrace={handleFetchTrace}
+              isLoading={traceLoading}
+              compact={true}
+            />
+          </div>
         </CardHeader>
         <CardContent>
           <div className="text-left grid gap-1">

@@ -21,10 +21,12 @@ interface Call {
 }
 
 interface DetailedTraceProps {
-  trace: Call;
+  trace: Call | null;
+  onFetchTrace?: () => void;
+  isLoading?: boolean;
 }
 
-export const DetailedTrace: React.FC<DetailedTraceProps> = ({ trace }) => {
+export const DetailedTrace: React.FC<DetailedTraceProps> = ({ trace, onFetchTrace, isLoading = false }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isDark, setIsDark] = useState(false);
   const [isFormatted, setIsFormatted] = useState(true);
@@ -63,7 +65,7 @@ export const DetailedTrace: React.FC<DetailedTraceProps> = ({ trace }) => {
       const lines = findErrorLines(trace);
       setErrorLines(lines);
     }
-  }, [trace]);
+  }, [trace, isFormatted]);
 
   useEffect(() => {
     if (editorRef.current && errorLines.length > 0 && isModalOpen) {
@@ -125,120 +127,136 @@ export const DetailedTrace: React.FC<DetailedTraceProps> = ({ trace }) => {
     }
   };
 
-  if (!trace) {
-    return null;
-  }
+  const handleButtonClick = async () => {
+    if (!trace && onFetchTrace) {
+      // Fetch trace first, then open modal
+      await onFetchTrace();
+    }
+    // Open modal (will happen after trace is fetched due to state update)
+    setIsModalOpen(true);
+  };
+
+  // Auto-open modal after trace is fetched
+  useEffect(() => {
+    if (trace && !isModalOpen && onFetchTrace) {
+      // This will be triggered when trace becomes available after fetching
+      setIsModalOpen(true);
+    }
+  }, [trace]);
 
   return (
     <>
       <div className="mt-4">
         <Button 
-          onClick={() => setIsModalOpen(true)}
+          onClick={handleButtonClick}
           variant="outline"
           className="w-full sm:w-auto"
-          aria-label="Open detailed trace in full-screen modal"
+          disabled={isLoading}
+          aria-label="Fetch and view detailed trace in full-screen modal"
         >
           <Maximize2 className="mr-2 h-4 w-4" />
-          View Detailed Trace
+          {isLoading ? "Loading Trace..." : trace ? "View Detailed Trace" : "Fetch & View Trace"}
         </Button>
       </div>
 
-      <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
-        <DialogContent 
-          className="max-w-[95vw] w-[95vw] h-[90vh] max-h-[90vh] p-0 flex flex-col"
-          aria-describedby="trace-description"
-        >
-          <DialogHeader className="p-6 pb-4 border-b">
-            <DialogTitle className="text-xl">Transaction Trace Details</DialogTitle>
-            <p id="trace-description" className="text-sm text-muted-foreground mt-2">
-              Detailed execution trace of the transaction. Lines with errors are highlighted.
-            </p>
-          </DialogHeader>
-          
-          <div className="flex gap-2 px-6 py-3 border-b bg-muted/30">
-            <Button
-              size="sm"
-              variant={isFormatted ? "default" : "outline"}
-              onClick={() => setIsFormatted(true)}
-              aria-label="Show formatted JSON"
-              aria-pressed={isFormatted}
-            >
-              Formatted
-            </Button>
-            <Button
-              size="sm"
-              variant={!isFormatted ? "default" : "outline"}
-              onClick={() => setIsFormatted(false)}
-              aria-label="Show raw JSON"
-              aria-pressed={!isFormatted}
-            >
-              Raw
-            </Button>
-            <div className="flex-1" />
-            <Button
-              size="sm"
-              variant="outline"
-              onClick={copyToClipboard}
-              aria-label={copied ? "Copied to clipboard" : "Copy trace to clipboard"}
-            >
-              {copied ? (
-                <>
-                  <Check className="mr-2 h-4 w-4 text-green-500" />
-                  Copied!
-                </>
-              ) : (
-                <>
-                  <Copy className="mr-2 h-4 w-4" />
-                  Copy
-                </>
-              )}
-            </Button>
-          </div>
+      {trace && (
+        <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
+          <DialogContent 
+            className="max-w-[95vw] w-[95vw] h-[90vh] max-h-[90vh] p-0 flex flex-col"
+            aria-describedby="trace-description"
+          >
+            <DialogHeader className="p-6 pb-4 border-b">
+              <DialogTitle className="text-xl">Transaction Trace Details</DialogTitle>
+              <p id="trace-description" className="text-sm text-muted-foreground mt-2">
+                Detailed execution trace of the transaction. Lines with errors are highlighted.
+              </p>
+            </DialogHeader>
+            
+            <div className="flex gap-2 px-6 py-3 border-b bg-muted/30">
+              <Button
+                size="sm"
+                variant={isFormatted ? "default" : "outline"}
+                onClick={() => setIsFormatted(true)}
+                aria-label="Show formatted JSON"
+                aria-pressed={isFormatted}
+              >
+                Formatted
+              </Button>
+              <Button
+                size="sm"
+                variant={!isFormatted ? "default" : "outline"}
+                onClick={() => setIsFormatted(false)}
+                aria-label="Show raw JSON"
+                aria-pressed={!isFormatted}
+              >
+                Raw
+              </Button>
+              <div className="flex-1" />
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={copyToClipboard}
+                aria-label={copied ? "Copied to clipboard" : "Copy trace to clipboard"}
+              >
+                {copied ? (
+                  <>
+                    <Check className="mr-2 h-4 w-4 text-green-500" />
+                    Copied!
+                  </>
+                ) : (
+                  <>
+                    <Copy className="mr-2 h-4 w-4" />
+                    Copy
+                  </>
+                )}
+              </Button>
+            </div>
 
-          <div className="flex-1 overflow-hidden px-6 pb-6 pt-3">
-            <style>{`
-              .ace-error-line {
-                background-color: rgba(255, 50, 50, 0.20) !important;
-                position: absolute;
-                z-index: 20;
-              }
-              .dark .ace-error-line {
-                background-color: rgba(255, 100, 100, 0.30) !important;
-              }
-              .ace_gutter-cell.ace-error-line {
-                background-color: rgba(255, 50, 50, 0.30) !important;
-              }
-            `}</style>
-            <AceEditor
-              ref={editorRef}
-              mode="json"
-              theme={isDark ? "twilight" : "dawn"}
-              value={getTraceContent()}
-              readOnly={true}
-              width="100%"
-              height="100%"
-              fontSize={13}
-              showPrintMargin={false}
-              showGutter={true}
-              highlightActiveLine={false}
-              setOptions={{
-                useWorker: false,
-                showLineNumbers: true,
-                tabSize: 2,
-                wrap: true,
-              }}
-              editorProps={{
-                $blockScrolling: true,
-              }}
-              style={{
-                borderRadius: '0.375rem',
-                border: '1px solid',
-                borderColor: isDark ? 'rgb(55, 65, 81)' : 'rgb(229, 231, 235)',
-              }}
-            />
-          </div>
-        </DialogContent>
-      </Dialog>
+            <div className="flex-1 overflow-hidden px-6 pb-6 pt-3">
+              <style>{`
+                .ace-error-line {
+                  background-color: rgba(255, 50, 50, 0.20) !important;
+                  position: absolute;
+                  z-index: 20;
+                }
+                .dark .ace-error-line {
+                  background-color: rgba(255, 100, 100, 0.30) !important;
+                }
+                .ace_gutter-cell.ace-error-line {
+                  background-color: rgba(255, 50, 50, 0.30) !important;
+                }
+              `}</style>
+              <AceEditor
+                ref={editorRef}
+                mode="json"
+                theme={isDark ? "twilight" : "dawn"}
+                value={getTraceContent()}
+                readOnly={true}
+                width="100%"
+                height="100%"
+                fontSize={13}
+                showPrintMargin={false}
+                showGutter={true}
+                highlightActiveLine={false}
+                setOptions={{
+                  useWorker: false,
+                  showLineNumbers: true,
+                  tabSize: 2,
+                  wrap: true,
+                }}
+                editorProps={{
+                  $blockScrolling: true,
+                }}
+                style={{
+                  borderRadius: '0.375rem',
+                  border: '1px solid',
+                  borderColor: isDark ? 'rgb(55, 65, 81)' : 'rgb(229, 231, 235)',
+                }}
+              />
+            </div>
+          </DialogContent>
+        </Dialog>
+      )}
     </>
   );
 }

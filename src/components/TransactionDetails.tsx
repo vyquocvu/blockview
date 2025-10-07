@@ -121,11 +121,18 @@ export function TransactionDetails({ txHash, onBack }: TransactionDetailsProps) 
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <h2 className="text-2xl font-bold">Transaction Details</h2>
-        {onBack && (
-          <Button onClick={onBack} variant="outline">
-            Go Back
-          </Button>
-        )}
+        <div className="flex gap-2">
+          <DetailedTrace 
+            trace={trace} 
+            onFetchTrace={handleFetchTrace}
+            isLoading={traceLoading}
+          />
+          {onBack && (
+            <Button onClick={onBack} variant="outline">
+              Go Back
+            </Button>
+          )}
+        </div>
       </div>
 
       <Card>
@@ -209,12 +216,6 @@ export function TransactionDetails({ txHash, onBack }: TransactionDetailsProps) 
                 onDecodedLogs={setDecodedLogs}
               />
             )}
-          </div>
-          <div className="mt-4 flex items-center gap-4">
-            <Button onClick={handleFetchTrace} disabled={traceLoading}>
-              {traceLoading ? "Loading Trace..." : "Fetch Trace"}
-            </Button>
-            {trace && <DetailedTrace trace={trace} />}
           </div>
           {traceError && (
             <div className="mt-4 text-red-500 bg-red-100 dark:bg-red-900 p-3 rounded-md">

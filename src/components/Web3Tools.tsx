@@ -14,6 +14,8 @@ import { Label } from './ui/label';
 import { UnitConverter } from './UnitConverter';
 import { BlockTimeConverter } from './BlockTimeConverter';
 import { GasEstimator } from './GasEstimator';
+import { HexConverter } from './HexConverter';
+import { ChecksumAddress } from './ChecksumAddress';
 import {
   connectWallet,
   disconnectWallet,
@@ -434,6 +436,8 @@ export function Web3Tools() {
           {/* Tools Tab */}
           <TabsContent value="tools" className="space-y-6">
             <GasEstimator />
+            <HexConverter />
+            <ChecksumAddress />
           </TabsContent>
         </Tabs>
       </CardContent>

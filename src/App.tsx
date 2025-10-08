@@ -15,11 +15,11 @@ import { EventLogFilter } from './components/EventLogFilter'
 import { NetworkProvider } from './context/NetworkContext'
 import { WalletProvider } from './context/WalletContext'
 import { KeccakTable } from './components/KeccakTable'
-import { UnitHelper } from './components/UnitHelper'
 import { TransactionsPage } from './components/TransactionsPage'
 import { AccountsPage } from './components/AccountsPage'
 import { TokensPage } from './components/TokensPage'
 import { TokenDetails } from './components/TokenDetails'
+import { Web3Tools } from './components/Web3Tools'
 
 function App() {
   const [route, setRoute] = useState<string>('blocks')
@@ -115,8 +115,8 @@ function App() {
         return <TokenDetails address={params.address} onBack={navigateToTokens} />
       case 'keccak':
         return <KeccakTable />
-      case 'helper':
-        return <UnitHelper />
+      case 'tools':
+        return <Web3Tools />
       case 'rpc':
         return <RpcInterface />
       case 'logs':

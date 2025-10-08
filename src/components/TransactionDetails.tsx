@@ -8,6 +8,7 @@ import { formatAddress } from "../lib/format";
 import { TransactionData } from "./transaction/TransactionData";
 import { TransactionLogs } from "./transaction/TransactionLogs";
 import { DetailedTrace } from "./transaction/DetailedTrace";
+import { Copy, Check } from "lucide-react";
 
 interface TransactionDetailsProps {
   txHash: string;
@@ -39,6 +40,7 @@ export function TransactionDetails({ txHash, onBack }: TransactionDetailsProps) 
   const [trace, setTrace] = useState<any | null>(null);
   const [traceLoading, setTraceLoading] = useState(false);
   const [traceError, setTraceError] = useState<string | null>(null);
+  const [copiedText, setCopiedText] = useState<string | null>(null);
 
   const handleFetchTrace = async () => {
     setTraceLoading(true);
@@ -84,6 +86,16 @@ export function TransactionDetails({ txHash, onBack }: TransactionDetailsProps) 
       fetchTransactionData();
     }
   }, [txHash]);
+
+  const copyToClipboard = async (text: string) => {
+    try {
+      await navigator.clipboard.writeText(text);
+      setCopiedText(text);
+      setTimeout(() => setCopiedText(null), 2000);
+    } catch (err) {
+      console.error("Failed to copy text: ", err);
+    }
+  };
 
   if (loading) {
     return (
@@ -147,7 +159,20 @@ export function TransactionDetails({ txHash, onBack }: TransactionDetailsProps) 
             <div className="grid gap-1">
               <div className="flex">
                 <h3 className="text-sm w-32 font-medium text-muted-foreground">Transaction Hash</h3>
-                <p className="text-sm font-mono break-all">{txHash}</p>
+                <div className="flex items-center gap-2">
+                  <p className="text-sm font-mono break-all">{txHash}</p>
+                  <button
+                    onClick={() => copyToClipboard(txHash)}
+                    className="text-muted-foreground hover:text-primary transition-colors flex-shrink-0"
+                    title="Copy transaction hash"
+                  >
+                    {copiedText === txHash ? (
+                      <Check className="h-4 w-4 text-green-500" />
+                    ) : (
+                      <Copy className="h-4 w-4" />
+                    )}
+                  </button>
+                </div>
               </div>
               <div className="flex">
                 <h3 className="text-sm w-32 font-medium text-muted-foreground">Status</h3>
@@ -167,23 +192,51 @@ export function TransactionDetails({ txHash, onBack }: TransactionDetailsProps) 
               </div>
               <div className="flex">
                 <h3 className="text-sm w-32 font-medium text-muted-foreground">From</h3>
-                <p className="text-sm font-mono break-all">
-                  <a href={`#/address/${transaction.from}`} className="text-primary hover:underline">
-                    {transaction.from}
-                  </a>
-                </p>
+                <div className="flex items-center gap-2">
+                  <p className="text-sm font-mono break-all">
+                    <a href={`#/address/${transaction.from}`} className="text-primary hover:underline">
+                      {transaction.from}
+                    </a>
+                  </p>
+                  <button
+                    onClick={() => copyToClipboard(transaction.from!)}
+                    className="text-muted-foreground hover:text-primary transition-colors flex-shrink-0"
+                    title="Copy from address"
+                  >
+                    {copiedText === transaction.from ? (
+                      <Check className="h-4 w-4 text-green-500" />
+                    ) : (
+                      <Copy className="h-4 w-4" />
+                    )}
+                  </button>
+                </div>
               </div>
               <div className="flex">
                 <h3 className="text-sm w-32 font-medium text-muted-foreground">To</h3>
-                <p className="text-sm font-mono break-all">
-                  {transaction.to ? (
-                    <a href={`#/address/${transaction.to}`} className="text-primary hover:underline">
-                      {transaction.to}
-                    </a>
-                  ) : (
+                {transaction.to ? (
+                  <div className="flex items-center gap-2">
+                    <p className="text-sm font-mono break-all">
+                      <a href={`#/address/${transaction.to}`} className="text-primary hover:underline">
+                        {transaction.to}
+                      </a>
+                    </p>
+                    <button
+                      onClick={() => copyToClipboard(transaction.to!)}
+                      className="text-muted-foreground hover:text-primary transition-colors flex-shrink-0"
+                      title="Copy to address"
+                    >
+                      {copiedText === transaction.to ? (
+                        <Check className="h-4 w-4 text-green-500" />
+                      ) : (
+                        <Copy className="h-4 w-4" />
+                      )}
+                    </button>
+                  </div>
+                ) : (
+                  <p className="text-sm font-mono break-all">
                     <span className="text-muted-foreground">Contract Creation</span>
-                  )}
-                </p>
+                  </p>
+                )}
               </div>
               <div className="flex">
                 <h3 className="text-sm w-32 font-medium text-muted-foreground">Value</h3>

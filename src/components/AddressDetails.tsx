@@ -3,6 +3,7 @@ import { getBalance, getTransactionCount, getCode } from "../lib/blockchain";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { Button } from "./ui/button";
 import { AddressType } from "./address/AddressType";
+import { Copy, Check } from "lucide-react";
 
 interface AddressDetailsProps {
   address: string;
@@ -15,6 +16,7 @@ export function AddressDetails({ address, onBack }: AddressDetailsProps) {
   const [isContract, setIsContract] = useState<boolean>(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [copiedText, setCopiedText] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchAddressData = async () => {
@@ -41,6 +43,16 @@ export function AddressDetails({ address, onBack }: AddressDetailsProps) {
       fetchAddressData();
     }
   }, [address]);
+
+  const copyToClipboard = async (text: string) => {
+    try {
+      await navigator.clipboard.writeText(text);
+      setCopiedText(text);
+      setTimeout(() => setCopiedText(null), 2000);
+    } catch (err) {
+      console.error("Failed to copy text: ", err);
+    }
+  };
 
   if (loading) {
     return (
@@ -77,7 +89,20 @@ export function AddressDetails({ address, onBack }: AddressDetailsProps) {
           <div className="grid gap-4">
             <div>
               <h3 className="text-sm font-medium text-muted-foreground">Address</h3>
-              <p className="text-sm font-mono break-all">{address}</p>
+              <div className="flex items-center gap-2">
+                <p className="text-sm font-mono break-all">{address}</p>
+                <button
+                  onClick={() => copyToClipboard(address)}
+                  className="text-muted-foreground hover:text-primary transition-colors flex-shrink-0"
+                  title="Copy address"
+                >
+                  {copiedText === address ? (
+                    <Check className="h-4 w-4 text-green-500" />
+                  ) : (
+                    <Copy className="h-4 w-4" />
+                  )}
+                </button>
+              </div>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

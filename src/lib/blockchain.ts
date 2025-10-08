@@ -108,9 +108,41 @@ export async function getCode(address: string) {
 }
 
 
-// Function to format timestamp to date
+// Function to format timestamp to date with relative time and UTC format
 export function formatTimestamp(timestamp: number) {
-  return new Date(timestamp * 1000).toLocaleString();
+  const date = new Date(timestamp * 1000);
+  const now = new Date();
+  const diffMs = now.getTime() - date.getTime();
+  const diffSecs = Math.floor(diffMs / 1000);
+  const diffMins = Math.floor(diffSecs / 60);
+  const diffHours = Math.floor(diffMins / 60);
+  const diffDays = Math.floor(diffHours / 24);
+
+  let relativeTime = '';
+  if (diffSecs < 60) {
+    relativeTime = `${diffSecs} secs ago`;
+  } else if (diffMins < 60) {
+    relativeTime = `${diffMins} mins ago`;
+  } else if (diffHours < 24) {
+    relativeTime = `${diffHours} hours ago`;
+  } else {
+    relativeTime = `${diffDays} days ago`;
+  }
+
+  // Format date in UTC: Oct-08-2025 08:35:01 AM +UTC
+  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  const month = months[date.getUTCMonth()];
+  const day = String(date.getUTCDate()).padStart(2, '0');
+  const year = date.getUTCFullYear();
+  const hours = date.getUTCHours();
+  const minutes = String(date.getUTCMinutes()).padStart(2, '0');
+  const seconds = String(date.getUTCSeconds()).padStart(2, '0');
+  const ampm = hours >= 12 ? 'PM' : 'AM';
+  const displayHours = hours % 12 || 12;
+
+  const formattedDate = `${month}-${day}-${year} ${String(displayHours).padStart(2, '0')}:${minutes}:${seconds} ${ampm} +UTC`;
+
+  return `${relativeTime} (${formattedDate})`;
 }
 
 const ERC20_ABI = [

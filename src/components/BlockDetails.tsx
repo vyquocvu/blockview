@@ -11,6 +11,7 @@ import {
   SelectValue,
 } from "./ui/select"
 import { Block, TransactionResponse } from "ethers";
+import { Copy, Check } from "lucide-react";
 
 interface BlockDetailsProps {
   blockNumber: string;
@@ -25,6 +26,7 @@ export function BlockDetails({ blockNumber, onBack }: BlockDetailsProps) {
   const [transactions, setTransactions] = useState<TransactionResponse[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [txsPerPage, setTxsPerPage] = useState(25);
+  const [copiedText, setCopiedText] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchBlockData = async () => {
@@ -73,6 +75,16 @@ export function BlockDetails({ blockNumber, onBack }: BlockDetailsProps) {
       await fetchTransactionsForPage(block, newPage);
       setCurrentPage(newPage);
       setLoading(false);
+    }
+  };
+
+  const copyToClipboard = async (text: string) => {
+    try {
+      await navigator.clipboard.writeText(text);
+      setCopiedText(text);
+      setTimeout(() => setCopiedText(null), 2000);
+    } catch (err) {
+      console.error("Failed to copy text: ", err);
     }
   };
 
@@ -184,29 +196,68 @@ export function BlockDetails({ blockNumber, onBack }: BlockDetailsProps) {
                   {transactions.map((tx) => (
                     <tr key={tx.hash} className="border-t hover:bg-muted/50 text-left">
                       <td className="px-4 py-3">
-                        <a
-                          href={`#/tx/${tx.hash}`}
-                          className="text-primary hover:underline font-mono"
-                        >
-                          {formatAddress(tx.hash)}
-                        </a>
+                        <div className="flex items-center gap-2">
+                          <a
+                            href={`#/tx/${tx.hash}`}
+                            className="text-primary hover:underline font-mono"
+                          >
+                            {formatAddress(tx.hash)}
+                          </a>
+                          <button
+                            onClick={() => copyToClipboard(tx.hash)}
+                            className="text-muted-foreground hover:text-primary transition-colors"
+                            title="Copy transaction hash"
+                          >
+                            {copiedText === tx.hash ? (
+                              <Check className="h-4 w-4 text-green-500" />
+                            ) : (
+                              <Copy className="h-4 w-4" />
+                            )}
+                          </button>
+                        </div>
                       </td>
                       <td className="px-4 py-3">
-                        <a
-                          href={`#/address/${tx.from}`}
-                          className="text-primary hover:underline font-mono"
-                        >
-                          {formatAddress(tx.from)}
-                        </a>
+                        <div className="flex items-center gap-2">
+                          <a
+                            href={`#/address/${tx.from}`}
+                            className="text-primary hover:underline font-mono"
+                          >
+                            {formatAddress(tx.from)}
+                          </a>
+                          <button
+                            onClick={() => copyToClipboard(tx.from)}
+                            className="text-muted-foreground hover:text-primary transition-colors"
+                            title="Copy from address"
+                          >
+                            {copiedText === tx.from ? (
+                              <Check className="h-4 w-4 text-green-500" />
+                            ) : (
+                              <Copy className="h-4 w-4" />
+                            )}
+                          </button>
+                        </div>
                       </td>
                       <td className="px-4 py-3">
                         {tx.to ? (
-                          <a
-                            href={`#/address/${tx.to}`}
-                            className="text-primary hover:underline font-mono"
-                          >
-                            {formatAddress(tx.to)}
-                          </a>
+                          <div className="flex items-center gap-2">
+                            <a
+                              href={`#/address/${tx.to}`}
+                              className="text-primary hover:underline font-mono"
+                            >
+                              {formatAddress(tx.to)}
+                            </a>
+                            <button
+                              onClick={() => copyToClipboard(tx.to!)}
+                              className="text-muted-foreground hover:text-primary transition-colors"
+                              title="Copy to address"
+                            >
+                              {copiedText === tx.to ? (
+                                <Check className="h-4 w-4 text-green-500" />
+                              ) : (
+                                <Copy className="h-4 w-4" />
+                              )}
+                            </button>
+                          </div>
                         ) : (
                           <span className="text-muted-foreground">Contract Creation</span>
                         )}

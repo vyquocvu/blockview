@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Card, CardContent } from "./ui/card";
 import { RpcUrlDialog } from "./RpcUrlDialog";
+import { NetworkPicker } from "./NetworkPicker";
 import { WalletConnectButton } from "./WalletConnectButton";
 import { useWallet } from "../context/WalletContext";
 import { provider } from "../lib/blockchain";
@@ -77,6 +78,7 @@ export function Layout({ children }: LayoutProps) {
               <a href={`#/profile/${account}`} className="text-sm font-medium transition-colors hover:text-primary">Profile</a>
             )}
             <div className="flex items-center space-x-2">
+              <NetworkPicker onUpdate={fetchNetworkInfo} />
               <WalletConnectButton />
               <RpcUrlDialog onUpdate={fetchNetworkInfo} />
             </div>

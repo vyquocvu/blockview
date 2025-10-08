@@ -93,9 +93,8 @@ The application uses hash-based routing. Access different features via:
 - `/accounts` - Account management
 - `/logs` - Event log filter
 - `/rpc` - RPC interface
-- `/helper` - Developer tools (unit converter, gas estimator, etc.)
+- `/tools` - Web3 & Helper Tools (unit converter, gas estimator, wallet operations, etc.)
 - `/keccak` - Keccak-256 hash generator
-- `/web3-demo` - Web3 utility demo and testing interface
 
 ## Web3 Utility Module
 
@@ -222,18 +221,23 @@ return () => cleanup();
 
 For detailed API documentation, type definitions, and more examples, see the inline documentation in `src/utils/web3.ts`.
 
-### Interactive Demo
+### Interactive Tools Interface
 
-An interactive demo component is available at `/web3-demo` route (accessible via `#/web3-demo` or through the "Web3 Demo" link in the navigation). This demo allows you to:
+A unified tools interface is available at `/tools` route (accessible via `#/tools` or through the "Tools" link in the navigation). This interface provides:
 
-- Test wallet connections with different providers
-- Check account balances
-- Switch between networks
-- Estimate gas and send transactions
-- Sign and verify messages
-- Explore all Web3 utility functions
+**Web3 Operations:**
+- Wallet connections with different providers
+- Account balance checking
+- Network switching
+- Gas estimation and transaction sending
+- Message signing and verification
 
-The demo component is located at `src/components/Web3UtilityDemo.tsx` and serves as a reference implementation for using the Web3 utilities.
+**Helper Tools:**
+- Unit converter (Wei, Gwei, Ether)
+- Block time converter
+- Gas estimator
+
+The tools interface is organized in tabs for easy navigation and is located at `src/components/Web3Tools.tsx`.
 
 ## Getting Started
 

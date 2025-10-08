@@ -178,6 +178,68 @@ export const PREDEFINED_NETWORKS: Record<string, NetworkConfig> = {
     type: "testnet",
     logo: "🔵"
   },
+  arbitrum: {
+    name: "Arbitrum One",
+    chainId: 42161,
+    rpcUrls: [
+      "https://arb1.arbitrum.io/rpc",
+      "https://arbitrum-one.publicnode.com"
+    ],
+    nativeCurrency: {
+      name: "Ether",
+      symbol: "ETH",
+      decimals: 18
+    },
+    blockExplorerUrls: ["https://arbiscan.io"],
+    type: "mainnet",
+    logo: "🔷"
+  },
+  arbitrumSepolia: {
+    name: "Arbitrum Sepolia Testnet",
+    chainId: 421614,
+    rpcUrls: [
+      "https://sepolia-rollup.arbitrum.io/rpc"
+    ],
+    nativeCurrency: {
+      name: "Ether",
+      symbol: "ETH",
+      decimals: 18
+    },
+    blockExplorerUrls: ["https://sepolia.arbiscan.io"],
+    type: "testnet",
+    logo: "🔷"
+  },
+  optimism: {
+    name: "Optimism Mainnet",
+    chainId: 10,
+    rpcUrls: [
+      "https://mainnet.optimism.io",
+      "https://optimism.publicnode.com"
+    ],
+    nativeCurrency: {
+      name: "Ether",
+      symbol: "ETH",
+      decimals: 18
+    },
+    blockExplorerUrls: ["https://optimistic.etherscan.io"],
+    type: "mainnet",
+    logo: "🔴"
+  },
+  optimismSepolia: {
+    name: "Optimism Sepolia Testnet",
+    chainId: 11155420,
+    rpcUrls: [
+      "https://sepolia.optimism.io"
+    ],
+    nativeCurrency: {
+      name: "Ether",
+      symbol: "ETH",
+      decimals: 18
+    },
+    blockExplorerUrls: ["https://sepolia-optimism.etherscan.io"],
+    type: "testnet",
+    logo: "🔴"
+  },
   viction: {
     name: "Viction",
     chainId: 88,
@@ -195,6 +257,10 @@ export const PREDEFINED_NETWORKS: Record<string, NetworkConfig> = {
     logo: "🟢"
   }
 };
+
+// Note: Solana, Sui, and native Tron are not EVM-compatible chains and cannot be added here.
+// This explorer is designed for EVM-compatible blockchains only.
+// For those chains, please use their respective native explorers.
 
 export const getNetworkByChainId = (chainId: number): NetworkConfig | undefined => {
   return Object.values(PREDEFINED_NETWORKS).find(network => network.chainId === chainId);

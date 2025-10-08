@@ -5,12 +5,14 @@ import { formatAddress } from "../lib/format";
 import { Button } from "./ui/button";
 import { Switch } from "./ui/switch";
 import { Label } from "./ui/label";
+import { Copy, Check } from "lucide-react";
 
 export function TransactionsList() {
   const [transactions, setTransactions] = useState<TransactionResponse[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [autoRefresh, setAutoRefresh] = useState(true);
+  const [copiedHash, setCopiedHash] = useState<string | null>(null);
 
   const fetchTransactions = async () => {
     try {
@@ -41,6 +43,16 @@ export function TransactionsList() {
       setError("Failed to fetch transactions. Please try again later.");
     } finally {
       setLoading(false);
+    }
+  };
+
+  const copyToClipboard = async (text: string) => {
+    try {
+      await navigator.clipboard.writeText(text);
+      setCopiedHash(text);
+      setTimeout(() => setCopiedHash(null), 2000);
+    } catch (err) {
+      console.error("Failed to copy text: ", err);
     }
   };
 
@@ -103,12 +115,25 @@ export function TransactionsList() {
               {transactions.map((tx) => (
                 <tr key={tx.hash} className="border-t hover:bg-muted/50 text-left text-base">
                   <td className="px-4 py-3">
-                    <a
-                      href={`#/tx/${tx.hash}`}
-                      className="text-primary hover:underline"
-                    >
-                      {formatAddress(tx.hash)}
-                    </a>
+                    <div className="flex items-center gap-2">
+                      <a
+                        href={`#/tx/${tx.hash}`}
+                        className="text-primary hover:underline"
+                      >
+                        {formatAddress(tx.hash)}
+                      </a>
+                      <button
+                        onClick={() => copyToClipboard(tx.hash)}
+                        className="text-muted-foreground hover:text-primary transition-colors"
+                        title="Copy transaction hash"
+                      >
+                        {copiedHash === tx.hash ? (
+                          <Check className="h-4 w-4 text-green-500" />
+                        ) : (
+                          <Copy className="h-4 w-4" />
+                        )}
+                      </button>
+                    </div>
                   </td>
                   <td className="px-4 py-3">
                     <a

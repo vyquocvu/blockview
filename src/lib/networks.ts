@@ -17,10 +17,10 @@ export const PREDEFINED_NETWORKS: Record<string, NetworkConfig> = {
     name: "Ethereum Mainnet",
     chainId: 1,
     rpcUrls: [
-      "https://eth-mainnet.g.alchemy.com/v2/demo",
       "https://ethereum.publicnode.com",
-      "https://rpc.ankr.com/eth",
-      "https://eth.llamarpc.com"
+      "https://eth.llamarpc.com",
+      "https://cloudflare-eth.com",
+      "https://rpc.ankr.com/eth"
     ],
     nativeCurrency: {
       name: "Ether",
@@ -35,9 +35,9 @@ export const PREDEFINED_NETWORKS: Record<string, NetworkConfig> = {
     name: "Ethereum Sepolia Testnet",
     chainId: 11155111,
     rpcUrls: [
+      "https://ethereum-sepolia.publicnode.com",
       "https://rpc.sepolia.org",
-      "https://eth-sepolia.g.alchemy.com/v2/demo",
-      "https://ethereum-sepolia.publicnode.com"
+      "https://rpc2.sepolia.org"
     ],
     nativeCurrency: {
       name: "Sepolia Ether",
@@ -52,9 +52,9 @@ export const PREDEFINED_NETWORKS: Record<string, NetworkConfig> = {
     name: "BNB Smart Chain Mainnet",
     chainId: 56,
     rpcUrls: [
+      "https://bsc-dataseed.bnbchain.org",
+      "https://bsc.publicnode.com",
       "https://bsc-dataseed.binance.org",
-      "https://bsc-dataseed1.defibit.io",
-      "https://bsc-dataseed1.ninicoin.io",
       "https://rpc.ankr.com/bsc"
     ],
     nativeCurrency: {
@@ -70,9 +70,9 @@ export const PREDEFINED_NETWORKS: Record<string, NetworkConfig> = {
     name: "BNB Smart Chain Testnet",
     chainId: 97,
     rpcUrls: [
-      "https://data-seed-prebsc-1-s1.binance.org:8545",
-      "https://data-seed-prebsc-2-s1.binance.org:8545",
-      "https://bsc-testnet.publicnode.com"
+      "https://bsc-testnet.publicnode.com",
+      "https://data-seed-prebsc-1-s1.bnbchain.org:8545",
+      "https://bsc-testnet.public.blastapi.io"
     ],
     nativeCurrency: {
       name: "BNB",
@@ -87,9 +87,10 @@ export const PREDEFINED_NETWORKS: Record<string, NetworkConfig> = {
     name: "Polygon Mainnet",
     chainId: 137,
     rpcUrls: [
+      "https://polygon-bor-rpc.publicnode.com",
       "https://polygon-rpc.com",
-      "https://rpc-mainnet.matic.network",
-      "https://polygon-mainnet.public.blastapi.io"
+      "https://rpc-mainnet.matic.quiknode.pro",
+      "https://polygon.llamarpc.com"
     ],
     nativeCurrency: {
       name: "MATIC",
@@ -120,8 +121,9 @@ export const PREDEFINED_NETWORKS: Record<string, NetworkConfig> = {
     name: "Avalanche C-Chain",
     chainId: 43114,
     rpcUrls: [
+      "https://avalanche-c-chain-rpc.publicnode.com",
       "https://api.avax.network/ext/bc/C/rpc",
-      "https://avalanche-mainnet.infura.io/v3/demo"
+      "https://avalanche.public-rpc.com"
     ],
     nativeCurrency: {
       name: "Avalanche",
@@ -151,8 +153,9 @@ export const PREDEFINED_NETWORKS: Record<string, NetworkConfig> = {
     name: "Base Mainnet",
     chainId: 8453,
     rpcUrls: [
+      "https://base-rpc.publicnode.com",
       "https://mainnet.base.org",
-      "https://base.publicnode.com"
+      "https://base.llamarpc.com"
     ],
     nativeCurrency: {
       name: "Ether",
@@ -182,8 +185,9 @@ export const PREDEFINED_NETWORKS: Record<string, NetworkConfig> = {
     name: "Arbitrum One",
     chainId: 42161,
     rpcUrls: [
+      "https://arbitrum-one-rpc.publicnode.com",
       "https://arb1.arbitrum.io/rpc",
-      "https://arbitrum-one.publicnode.com"
+      "https://arbitrum.llamarpc.com"
     ],
     nativeCurrency: {
       name: "Ether",
@@ -213,8 +217,9 @@ export const PREDEFINED_NETWORKS: Record<string, NetworkConfig> = {
     name: "Optimism Mainnet",
     chainId: 10,
     rpcUrls: [
+      "https://optimism-rpc.publicnode.com",
       "https://mainnet.optimism.io",
-      "https://optimism.publicnode.com"
+      "https://optimism.llamarpc.com"
     ],
     nativeCurrency: {
       name: "Ether",

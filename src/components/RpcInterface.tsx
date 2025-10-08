@@ -51,88 +51,104 @@ export function RpcInterface() {
   };
 
   return (
-    <div className="space-y-6">
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-xl">RPC Interface</CardTitle>
-          <p className="text-sm text-muted-foreground">
-            Make direct RPC calls to the connected blockchain node
-          </p>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="grid gap-2">
-            <Label htmlFor="method">Method</Label>
-            <Input
-              id="method"
-              value={method}
-              onChange={(e) => setMethod(e.target.value)}
-              placeholder="eth_blockNumber"
-            />
-          </div>
-
-          <div className="grid gap-2">
-            <Label htmlFor="params">Parameters (JSON array)</Label>
-            <Textarea
-              id="params"
-              value={params}
-              onChange={(e) => setParams(e.target.value)}
-              placeholder='["latest", false]'
-              rows={3}
-            />
-          </div>
-
-          <Button onClick={handleSubmit} disabled={loading || !method}>
-            {loading ? "Calling..." : "Call RPC Method"}
-          </Button>
-        </CardContent>
-      </Card>
-
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-lg">Common Methods</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="grid gap-2">
-            {commonMethods.map((item, index) => (
-              <Button
-                key={index}
-                variant="outline"
-                size="sm"
-                onClick={() => handleMethodSelect(item.name, item.params)}
-                className="justify-start text-left"
-              >
-                {item.name}
-              </Button>
-            ))}
-          </div>
-        </CardContent>
-      </Card>
-
-      {error && (
+    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      {/* Left side - RPC Interface and Common Methods */}
+      <div className="lg:col-span-1 space-y-6">
         <Card>
           <CardHeader>
-            <CardTitle className="text-lg text-destructive">Error</CardTitle>
+            <CardTitle className="text-xl">RPC Interface</CardTitle>
+            <p className="text-sm text-muted-foreground">
+              Make direct RPC calls to the connected blockchain node
+            </p>
           </CardHeader>
-          <CardContent>
-            <pre className="text-sm bg-destructive/10 p-4 rounded overflow-auto">
-              {error}
-            </pre>
+          <CardContent className="space-y-4">
+            <div className="grid gap-2">
+              <Label htmlFor="method">Method</Label>
+              <Input
+                id="method"
+                value={method}
+                onChange={(e) => setMethod(e.target.value)}
+                placeholder="eth_blockNumber"
+              />
+            </div>
+
+            <div className="grid gap-2">
+              <Label htmlFor="params">Parameters (JSON array)</Label>
+              <Textarea
+                id="params"
+                value={params}
+                onChange={(e) => setParams(e.target.value)}
+                placeholder='["latest", false]'
+                rows={3}
+              />
+            </div>
+
+            <Button onClick={handleSubmit} disabled={loading || !method}>
+              {loading ? "Calling..." : "Call RPC Method"}
+            </Button>
           </CardContent>
         </Card>
-      )}
 
-      {result !== null && (
         <Card>
           <CardHeader>
-            <CardTitle className="text-lg">Result</CardTitle>
+            <CardTitle className="text-lg">Common Methods</CardTitle>
           </CardHeader>
           <CardContent>
-            <pre className="text-sm bg-muted p-4 rounded overflow-auto">
-              {JSON.stringify(result, null, 2)}
-            </pre>
+            <div className="grid gap-2">
+              {commonMethods.map((item, index) => (
+                <Button
+                  key={index}
+                  variant="outline"
+                  size="sm"
+                  onClick={() => handleMethodSelect(item.name, item.params)}
+                  className="justify-start text-left"
+                >
+                  {item.name}
+                </Button>
+              ))}
+            </div>
           </CardContent>
         </Card>
-      )}
+      </div>
+
+      {/* Right side - Results */}
+      <div className="lg:col-span-2">
+        {error && (
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-lg text-destructive">Error</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <pre className="text-sm bg-destructive/10 p-4 rounded overflow-auto max-h-[600px]">
+                {error}
+              </pre>
+            </CardContent>
+          </Card>
+        )}
+
+        {result !== null && (
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-lg">Result</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <pre className="text-sm bg-muted p-4 rounded overflow-auto max-h-[600px]">
+                {JSON.stringify(result, null, 2)}
+              </pre>
+            </CardContent>
+          </Card>
+        )}
+
+        {!error && result === null && (
+          <Card className="h-full min-h-[400px] flex items-center justify-center">
+            <CardContent>
+              <p className="text-muted-foreground text-center">
+                Select a method and call it to see the result here
+              </p>
+            </CardContent>
+          </Card>
+        )}
+      </div>
     </div>
   );
 }

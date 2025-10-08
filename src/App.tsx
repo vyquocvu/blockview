@@ -20,6 +20,7 @@ import { TransactionsPage } from './components/TransactionsPage'
 import { AccountsPage } from './components/AccountsPage'
 import { TokensPage } from './components/TokensPage'
 import { TokenDetails } from './components/TokenDetails'
+import { Web3UtilityDemo } from './components/Web3UtilityDemo'
 
 function App() {
   const [route, setRoute] = useState<string>('blocks')
@@ -121,6 +122,8 @@ function App() {
         return <RpcInterface />
       case 'logs':
         return <EventLogFilter />
+      case 'web3-demo':
+        return <Web3UtilityDemo />
       default:
         return (
           <>

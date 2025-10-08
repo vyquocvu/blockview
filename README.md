@@ -95,6 +95,7 @@ The application uses hash-based routing. Access different features via:
 - `/rpc` - RPC interface
 - `/helper` - Developer tools (unit converter, gas estimator, etc.)
 - `/keccak` - Keccak-256 hash generator
+- `/web3-demo` - Web3 utility demo and testing interface
 
 ## Web3 Utility Module
 
@@ -220,6 +221,19 @@ return () => cleanup();
 ### API Documentation
 
 For detailed API documentation, type definitions, and more examples, see the inline documentation in `src/utils/web3.ts`.
+
+### Interactive Demo
+
+An interactive demo component is available at `/web3-demo` route (accessible via `#/web3-demo` or through the "Web3 Demo" link in the navigation). This demo allows you to:
+
+- Test wallet connections with different providers
+- Check account balances
+- Switch between networks
+- Estimate gas and send transactions
+- Sign and verify messages
+- Explore all Web3 utility functions
+
+The demo component is located at `src/components/Web3UtilityDemo.tsx` and serves as a reference implementation for using the Web3 utilities.
 
 ## Getting Started
 

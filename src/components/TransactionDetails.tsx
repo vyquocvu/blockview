@@ -3,7 +3,7 @@ import { TransactionReceipt, TransactionResponse } from "ethers";
 
 import { Button } from "./ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
-import { getTransaction, getTransactionReceipt, formatTimestamp, getDetailedTrace } from "../lib/blockchain";
+import { getTransaction, getTransactionReceipt, formatTimestamp, getDetailedTrace, getBlock } from "../lib/blockchain";
 import { formatAddress } from "../lib/format";
 import { TransactionData } from "./transaction/TransactionData";
 import { TransactionLogs } from "./transaction/TransactionLogs";
@@ -71,6 +71,14 @@ export function TransactionDetails({ txHash, onBack }: TransactionDetailsProps) 
           getTransaction(txHash),
           getTransactionReceipt(txHash)
         ]);
+
+        // Fetch block to get timestamp if transaction is mined
+        if (txData && txData.blockNumber) {
+          const block = await getBlock(txData.blockNumber);
+          if (block) {
+            txData.timestamp = block.timestamp;
+          }
+        }
 
         setTransaction(txData);
         setReceipt(txReceipt);

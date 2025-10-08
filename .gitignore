@@ -30,3 +30,6 @@ dist-ssr
 .pnp.loader.mjs
 .yarn/
 yarn.lock
+
+# Demo files
+public/demo.html

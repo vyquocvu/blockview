@@ -73,7 +73,7 @@ export function Layout({ children }: LayoutProps) {
             <a href="#/logs" className="text-sm font-medium transition-colors hover:text-primary">Logs</a>
             <a href="#/rpc" className="text-sm font-medium transition-colors hover:text-primary">RPC</a>
             <a href="#/helper" className="text-sm font-medium transition-colors hover:text-primary">Helper</a>
-            <a href="#/web3-demo" className="text-sm font-medium transition-colors hover:text-primary">Web3 Demo</a>
+            <a href="#/web3-demo" className="text-sm font-medium transition-colors hover:text-primary">Web3</a>
             {account && (
               <a href={`#/profile/${account}`} className="text-sm font-medium transition-colors hover:text-primary">Profile</a>
             )}

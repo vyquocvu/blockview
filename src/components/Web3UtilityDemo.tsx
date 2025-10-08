@@ -245,7 +245,7 @@ export function Web3UtilityDemo() {
     <div className="space-y-6">
       <Card>
         <CardHeader>
-          <CardTitle>Web3 Utility Demo</CardTitle>
+          <CardTitle>Web3 Utilities</CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
           {/* Connection Status */}

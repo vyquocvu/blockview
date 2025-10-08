@@ -96,6 +96,131 @@ The application uses hash-based routing. Access different features via:
 - `/helper` - Developer tools (unit converter, gas estimator, etc.)
 - `/keccak` - Keccak-256 hash generator
 
+## Web3 Utility Module
+
+BlockView includes a comprehensive Web3 utility module (`src/utils/web3.ts`) that provides reusable functions for common Web3 operations. This module is designed to be modular, maintainable, and easily extensible.
+
+### Features
+
+The Web3 utility module provides:
+
+- **Wallet Connection & Management**: Connect to multiple wallet providers (MetaMask, OKX, Coinbase, etc.)
+- **Network Switching**: Easily switch between networks or add new networks
+- **Transaction Handling**: Send transactions, estimate gas, wait for confirmations, and sign messages
+- **Balance Queries**: Retrieve account balances and transaction counts
+- **Contract Interactions**: Read from and write to smart contracts
+- **Error Handling**: Comprehensive error handling with user-friendly messages
+- **Type Safety**: Full TypeScript support with detailed type definitions
+- **Event Listeners**: Listen to wallet events (account changes, network changes, disconnects)
+
+### Usage Examples
+
+#### Connect to Wallet
+
+```typescript
+import { connectWallet, WalletProvider } from '@/utils/web3';
+
+try {
+  const connection = await connectWallet(WalletProvider.METAMASK);
+  console.log('Connected address:', connection.address);
+  console.log('Chain ID:', connection.chainId);
+} catch (error) {
+  console.error('Connection failed:', error);
+}
+```
+
+#### Get Balance
+
+```typescript
+import { getWalletBalance } from '@/utils/web3';
+
+const balanceInfo = await getWalletBalance('0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb');
+console.log('Balance:', balanceInfo.formattedBalance);
+```
+
+#### Send Transaction
+
+```typescript
+import { sendTransaction, waitForTransaction } from '@/utils/web3';
+import { ethers } from 'ethers';
+
+// Send ETH
+const txHash = await sendTransaction({
+  to: '0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb',
+  value: ethers.parseEther('0.1').toString()
+});
+
+// Wait for confirmation
+const receipt = await waitForTransaction(txHash);
+console.log('Transaction successful:', receipt.status === 1);
+```
+
+#### Switch Network
+
+```typescript
+import { switchNetwork } from '@/utils/web3';
+
+// Switch to Ethereum Mainnet
+await switchNetwork(1);
+
+// Or add a custom network
+await switchNetwork(56, {
+  chainId: 56,
+  chainName: 'BNB Smart Chain',
+  nativeCurrency: { name: 'BNB', symbol: 'BNB', decimals: 18 },
+  rpcUrls: ['https://bsc-dataseed.binance.org'],
+  blockExplorerUrls: ['https://bscscan.com']
+});
+```
+
+#### Interact with Smart Contracts
+
+```typescript
+import { callContractMethod, sendContractTransaction } from '@/utils/web3';
+
+// Read from contract
+const balance = await callContractMethod(
+  tokenAddress,
+  ['function balanceOf(address) view returns (uint256)'],
+  'balanceOf',
+  [walletAddress]
+);
+
+// Write to contract
+const txHash = await sendContractTransaction(
+  tokenAddress,
+  ['function transfer(address to, uint256 amount) returns (bool)'],
+  'transfer',
+  [recipientAddress, ethers.parseUnits('100', 18)]
+);
+```
+
+#### Listen to Wallet Events
+
+```typescript
+import { setupWalletEventListeners } from '@/utils/web3';
+
+const cleanup = setupWalletEventListeners({
+  onAccountsChanged: (accounts) => {
+    console.log('Account changed:', accounts[0]);
+  },
+  onChainChanged: (chainId) => {
+    console.log('Network changed:', chainId);
+    window.location.reload(); // Recommended by MetaMask
+  },
+  onDisconnect: () => {
+    console.log('Wallet disconnected');
+  }
+});
+
+// Clean up listeners when component unmounts
+return () => cleanup();
+```
+
+### API Documentation
+
+For detailed API documentation, type definitions, and more examples, see the inline documentation in `src/utils/web3.ts`.
+
 ## Getting Started
 
 1. Install dependencies

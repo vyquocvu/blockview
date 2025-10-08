@@ -126,51 +126,51 @@ export function HexConverter() {
   };
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-3">
       <div className="flex justify-between items-center">
-        <h3 className="font-semibold">Hex Converter</h3>
-        <Button variant="outline" size="sm" onClick={handleClear}>
+        <h3 className="text-base font-semibold">Hex Converter</h3>
+        <Button variant="outline" size="sm" onClick={handleClear} className="h-7 text-xs">
           Clear
         </Button>
       </div>
-      <div className="space-y-2 text-left">
-        <Label htmlFor="hex">Hexadecimal</Label>
+      <div className="grid grid-cols-[100px_1fr] gap-2 items-center">
+        <Label htmlFor="hex" className="text-xs">Hexadecimal</Label>
         <Input
           id="hex"
           placeholder="0x1a2b3c or 1a2b3c"
           value={hex}
           onChange={(e) => handleHexChange(e.target.value)}
-          className="font-mono"
+          className="font-mono h-8 text-sm"
         />
       </div>
-      <div className="space-y-2 text-left">
-        <Label htmlFor="decimal">Decimal</Label>
+      <div className="grid grid-cols-[100px_1fr] gap-2 items-center">
+        <Label htmlFor="decimal" className="text-xs">Decimal</Label>
         <Input
           id="decimal"
           placeholder="1731164"
           value={decimal}
           onChange={(e) => handleDecimalChange(e.target.value)}
-          className="font-mono"
+          className="font-mono h-8 text-sm"
         />
       </div>
-      <div className="space-y-2 text-left">
-        <Label htmlFor="binary">Binary</Label>
+      <div className="grid grid-cols-[100px_1fr] gap-2 items-center">
+        <Label htmlFor="binary" className="text-xs">Binary</Label>
         <Input
           id="binary"
           placeholder="110100101011001111000"
           value={binary}
           onChange={(e) => handleBinaryChange(e.target.value)}
-          className="font-mono text-xs"
+          className="font-mono text-xs h-8"
         />
       </div>
       {ascii && (
-        <div className="space-y-2 text-left">
-          <Label htmlFor="ascii">ASCII</Label>
+        <div className="grid grid-cols-[100px_1fr] gap-2 items-center">
+          <Label htmlFor="ascii" className="text-xs">ASCII</Label>
           <Input
             id="ascii"
             value={ascii}
             readOnly
-            className="font-mono bg-muted"
+            className="font-mono bg-muted h-8 text-sm"
           />
         </div>
       )}

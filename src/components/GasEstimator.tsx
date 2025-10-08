@@ -53,80 +53,85 @@ export function GasEstimator() {
 
   return (
     <Card>
-      <CardHeader>
-        <CardTitle className="text-xl">Gas Estimator</CardTitle>
-        <p className="text-sm text-muted-foreground">
-          Estimate gas costs for transactions before sending them
-        </p>
+      <CardHeader className="pb-3">
+        <CardTitle className="text-base">Gas Estimator</CardTitle>
       </CardHeader>
-      <CardContent className="space-y-4">
-        <form onSubmit={handleEstimate} className="space-y-4">
-          <div className="grid gap-2">
-            <Label htmlFor="to">To Address</Label>
+      <CardContent className="space-y-3">
+        <form onSubmit={handleEstimate} className="space-y-2">
+          <div className="grid grid-cols-[100px_1fr] gap-2 items-center">
+            <Label htmlFor="to" className="text-xs">To Address</Label>
             <Input
               id="to"
               value={to}
               onChange={(e) => setTo(e.target.value)}
               placeholder="0x..."
+              className="h-8 text-sm"
             />
           </div>
 
-          <div className="grid gap-2">
-            <Label htmlFor="value">Value (wei)</Label>
+          <div className="grid grid-cols-[100px_1fr] gap-2 items-center">
+            <Label htmlFor="value" className="text-xs">Value (wei)</Label>
             <Input
               id="value"
               value={value}
               onChange={(e) => setValue(e.target.value)}
               placeholder="0"
+              className="h-8 text-sm"
             />
           </div>
 
-          <div className="grid gap-2">
-            <Label htmlFor="data">Data (hex)</Label>
+          <div className="grid grid-cols-[100px_1fr] gap-2 items-center">
+            <Label htmlFor="data" className="text-xs">Data (hex)</Label>
             <Input
               id="data"
               value={data}
               onChange={(e) => setData(e.target.value)}
               placeholder="0x"
+              className="h-8 text-sm"
             />
           </div>
 
-          <Button type="submit" disabled={loading}>
-            {loading ? "Estimating..." : "Estimate Gas"}
-          </Button>
+          <div className="grid grid-cols-[100px_1fr] gap-2 items-center">
+            <div></div>
+            <Button type="submit" disabled={loading} size="sm" className="h-8">
+              {loading ? "Estimating..." : "Estimate Gas"}
+            </Button>
+          </div>
         </form>
 
-        <div className="grid gap-2">
-          <Label>Quick Presets</Label>
-          {presets.map((preset, index) => (
-            <Button
-              key={index}
-              variant="outline"
-              size="sm"
-              onClick={() => {
-                setTo(preset.to);
-                setValue(preset.value);
-                setData(preset.data);
-              }}
-              className="justify-start text-left"
-            >
-              {preset.name}
-            </Button>
-          ))}
+        <div className="space-y-1.5">
+          <Label className="text-xs">Quick Presets</Label>
+          <div className="flex gap-1.5">
+            {presets.map((preset, index) => (
+              <Button
+                key={index}
+                variant="outline"
+                size="sm"
+                onClick={() => {
+                  setTo(preset.to);
+                  setValue(preset.value);
+                  setData(preset.data);
+                }}
+                className="h-7 text-xs flex-1"
+              >
+                {preset.name}
+              </Button>
+            ))}
+          </div>
         </div>
 
         {error && (
-          <div className="bg-destructive/20 text-destructive p-4 rounded-md">
+          <div className="bg-destructive/20 text-destructive p-2 rounded-md text-xs">
             {error}
           </div>
         )}
 
         {gasEstimate && (
-          <div className="bg-green-50 border border-green-200 p-4 rounded-md">
-            <div className="font-medium text-green-800">
+          <div className="bg-green-50 border border-green-200 p-2 rounded-md">
+            <div className="font-medium text-green-800 text-xs">
               Estimated Gas: {gasEstimate} units
             </div>
-            <div className="text-sm text-green-600 mt-1">
+            <div className="text-xs text-green-600 mt-0.5">
               This is an estimate and actual gas usage may vary
             </div>
           </div>

@@ -63,7 +63,10 @@ export function Layout({ children }: LayoutProps) {
       <header className="sticky top-0 z-40 w-full border-b bg-background">
         <div className="w-full flex h-16 items-center justify-between">
           <div className="flex items-center gap-6 md:gap-10">
-            <h1 className="text-xl font-bold">EVM Blockchain Explorer</h1>
+            <div className="flex items-center gap-2">
+              <img src="/hotpot.svg" alt="Blockchain Hotpot" className="h-8 w-8" />
+              <h1 className="text-xl font-bold">Blockchain Hotpot</h1>
+            </div>
           </div>
           <nav className="flex items-center space-x-6">
             <a href="#/" className="text-sm font-medium transition-colors hover:text-primary">Home</a>

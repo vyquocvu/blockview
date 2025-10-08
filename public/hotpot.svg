@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <!-- Hexagon shapes at bottom representing blockchain -->
+  <g transform="translate(100, 150)">
+    <!-- Left hexagon -->
+    <polygon points="-60,-17.32 -45,-25.98 -30,-17.32 -30,0 -45,8.66 -60,0" fill="#FFA726" stroke="#D84315" stroke-width="3"/>
+    <!-- Center hexagon -->
+    <polygon points="-15,-17.32 0,-25.98 15,-17.32 15,0 0,8.66 -15,0" fill="#FFA726" stroke="#D84315" stroke-width="3"/>
+    <!-- Right hexagon -->
+    <polygon points="30,-17.32 45,-25.98 60,-17.32 60,0 45,8.66 30,0" fill="#FFA726" stroke="#D84315" stroke-width="3"/>
+  </g>
+  
+  <!-- Hotpot bowl -->
+  <ellipse cx="100" cy="90" rx="50" ry="15" fill="#B03A2E" stroke="#D84315" stroke-width="3"/>
+  <path d="M 50 90 Q 50 120 100 120 Q 150 120 150 90" fill="#FF7043" stroke="#D84315" stroke-width="3"/>
+  <ellipse cx="100" cy="90" rx="45" ry="12" fill="#FFA726"/>
+  
+  <!-- Hotpot legs -->
+  <rect x="65" y="120" width="8" height="12" rx="4" fill="#B03A2E"/>
+  <rect x="96" y="120" width="8" height="12" rx="4" fill="#B03A2E"/>
+  <rect x="127" y="120" width="8" height="12" rx="4" fill="#B03A2E"/>
+  
+  <!-- Steam lines -->
+  <path d="M 75 80 Q 70 60 75 40" fill="none" stroke="#FFE0B2" stroke-width="4" stroke-linecap="round" opacity="0.8"/>
+  <path d="M 100 75 Q 95 50 100 25" fill="none" stroke="#FFE0B2" stroke-width="5" stroke-linecap="round" opacity="0.9"/>
+  <path d="M 125 80 Q 130 60 125 40" fill="none" stroke="#FFE0B2" stroke-width="4" stroke-linecap="round" opacity="0.8"/>
+</svg>

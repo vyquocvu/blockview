@@ -436,7 +436,9 @@ export function Web3Tools() {
           {/* Tools Tab */}
           <TabsContent value="tools" className="space-y-6">
             <GasEstimator />
+            <hr />
             <HexConverter />
+            <hr />
             <ChecksumAddress />
           </TabsContent>
         </Tabs>

@@ -94,6 +94,11 @@ export function Layout({ children }: LayoutProps) {
             </CardContent>
         </Card>
       </main>
+      <footer className="fixed bottom-4 right-4">
+        <a href="https://github.com/vyquocvu/blockview" target="_blank" rel="noopener noreferrer">
+          <img src="/github.svg" alt="GitHub" className="h-8 w-8" />
+        </a>
+      </footer>
     </div>
   );
 }
